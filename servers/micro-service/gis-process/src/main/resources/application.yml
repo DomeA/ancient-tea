@@ -1,0 +1,35 @@
+spring:
+  profiles:
+    #选择使用下面哪个配置项
+    active: devProfile
+   #服务配置信息
+  cloud:
+    config:
+      #此处的config.profile会根据生效的active设置对应的值
+      profile: ${config.profile}
+      name: application
+      uri: http://localhost:8888
+      label: master
+      discovery:
+        service-id: configServer
+        enabled: true
+      enabled: true
+
+#将不同的配置组以---分割，并通过spring.profiles定义每组的名字，方便后续引用
+---
+spring:
+  profiles: testProfile
+config:
+  profile: test
+
+---
+spring:
+  profiles: devProfile
+config:
+  profile: dev
+
+---
+spring:
+  profiles: prodProfile
+config:
+  profile: prod
