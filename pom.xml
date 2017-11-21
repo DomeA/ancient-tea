@@ -16,6 +16,10 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>servers/micro-service/gis-process</module>
+        <module>component/netcdf</module>
+        <module>servers/micro-service/postgresql</module>
+        <module>servers/micro-service/mongodb</module>
+        <module>component/sde</module>
     </modules>
 
     <dependencyManagement>
