@@ -69,7 +69,7 @@ public class PrimaryConfig {
         return new JdbcTemplate(primaryDataSource);
     }
 
-    @Bean
+    @Bean("transactionTemplatePrimary")
     @Primary
     public TransactionTemplate transactionTemplate(PlatformTransactionManager platformTransactionManager) {
         return new TransactionTemplate(platformTransactionManager);

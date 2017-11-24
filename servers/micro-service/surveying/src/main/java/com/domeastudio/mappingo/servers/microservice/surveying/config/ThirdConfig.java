@@ -71,7 +71,7 @@ public class ThirdConfig {
         return new JdbcTemplate(thirdDataSource);
     }
 
-    @Bean
+    @Bean("transactionTemplateThird")
     public TransactionTemplate transactionTemplate(PlatformTransactionManager platformTransactionManager){
         return new TransactionTemplate(platformTransactionManager);
     }

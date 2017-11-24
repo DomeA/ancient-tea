@@ -71,7 +71,7 @@ public class SecondaryConfig {
         return new JdbcTemplate(secondaryDataSource);
     }
 
-    @Bean
+    @Bean("transactionTemplateSecondary")
     public TransactionTemplate transactionTemplate(PlatformTransactionManager platformTransactionManager){
         return new TransactionTemplate(platformTransactionManager);
     }

@@ -22,7 +22,7 @@ spring:
 #    database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
   datasource:
     third:
-      url: jdbc:postgresql://localhost:5432/postgis?searchpath=public
+      url: jdbc:postgresql://localhost:5432/postgisdb?searchpath=public
       username: postgres
       password: domea
       driver-class-name: org.postgresql.Driver
