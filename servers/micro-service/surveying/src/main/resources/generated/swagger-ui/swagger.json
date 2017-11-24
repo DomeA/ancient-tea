@@ -1,9 +1,9 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "This is a sample for swagger-maven-plugin",
+    "description" : "This is a sample for mappingo microservices",
     "version" : "v1",
-    "title" : "RTP REST APIs",
+    "title" : "Mappingo REST APIs",
     "contact" : {
       "name" : "DomeA",
       "url" : "http://www.domeastudio.com",
@@ -14,7 +14,7 @@
       "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host" : "petstore.swagger.wordnik.com",
-  "basePath" : "/rtprest/rest",
+  "host" : "loaclhost",
+  "basePath" : "/microservice/rest",
   "schemes" : [ "http" ]
 }

@@ -44,12 +44,12 @@
             <artifactId>shiro-spring</artifactId>
             <version>1.4.0</version>
         </dependency>
-        <!-- shiro ehcache -->
-        <!--<dependency>-->
-        <!--<groupId>org.apache.shiro</groupId>-->
-        <!--<artifactId>shiro-ehcache</artifactId>-->
-        <!--<version>1.2.2</version>-->
-        <!--</dependency>-->
+        <!--shiro ehcache-->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+            <version>1.4.0</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -66,5 +66,70 @@
             <version>2.7.0</version>
         </dependency>
     </dependencies>
+    <build>
+        <finalName>surveying</finalName>
+        <plugins>
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.1.5</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>true</springmvc> <!-- false为JAX-RS -->
+                            <locations>com.domeastudio.mappingo.servers.microservice.surveying.rest</locations>
+                            <schemes>http</schemes>
+                            <!--<schemes>http,https</schemes>-->
+                            <host>loaclhost</host>
+                            <basePath>/microservice/rest</basePath>
+                            <info>
+                                <title>Mappingo REST APIs</title>
+                                <version>v1</version>
+                                <description>This is a sample for mappingo microservices</description>
+                                <contact>
+                                    <email>domeastudio@gmail.com</email>
+                                    <name>DomeA</name>
+                                    <url>http://www.domeastudio.com</url>
+                                </contact>
+                                <license>
+                                    <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+                                    <name>Apache 2.0</name>
+                                </license>
+                            </info>
+                            <templatePath>${basedir}/src/main/resources/templates/strapdown.html.hbs</templatePath>
+                            <outputPath>${basedir}/src/main/resources/generated/document.html</outputPath>
+                            <swaggerDirectory>${basedir}/src/main/resources/generated/swagger-ui</swaggerDirectory>
+                            <!--<attachSwaggerArtifact>true</attachSwaggerArtifact> -->
+                            <!--<jsonExampleValues>true</jsonExampleValues> -->
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+                <dependencies>
+                    <!-- spring热部署-->
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>springloaded</artifactId>
+                        <version>1.2.7.RELEASE</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 </project>

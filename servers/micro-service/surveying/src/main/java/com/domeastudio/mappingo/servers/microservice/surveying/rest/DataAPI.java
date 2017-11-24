@@ -2,8 +2,10 @@ package com.domeastudio.mappingo.servers.microservice.surveying.rest;
 
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.MUsersEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.repository.MUsersRepository;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services.UserService;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.PUsersEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.repository.PUsersRepository;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.UserService2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,25 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class DataAPI {
 
     @Autowired
-    MUsersRepository mUsersRepository;
+    UserService userService;
 
     @Autowired
-    PUsersRepository pUsersRepository;
+    UserService2 userService2;
 
     @RequestMapping(value = "/addPUser",method = RequestMethod.GET)
     public void addPostgresqlUSer(){
-        PUsersEntity p=new PUsersEntity();
-
-        p.setName("pdomea");
-        p.setPwd("ddd");
-        pUsersRepository.save(p);
+        userService2.saveUser();
     }
     @RequestMapping(value = "/addMUser",method = RequestMethod.GET)
     public void addMongodbUSer(){
-        MUsersEntity m=new MUsersEntity();
+        userService.saveUser();
 
-        m.setName("mdomea");
-        m.setPwd("ddcc");
-        mUsersRepository.save(m);
     }
 }
