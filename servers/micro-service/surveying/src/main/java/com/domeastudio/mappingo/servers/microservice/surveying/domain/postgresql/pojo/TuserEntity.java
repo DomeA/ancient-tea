@@ -14,7 +14,6 @@ public class TuserEntity {
     private String pwd;
     private String email;
     private String token;
-    private String uiid;
     private Set<RuserresourceEntity> ruserresourcesByUid;
     private Set<RuserroleEntity> ruserrolesByUid;
     private TuserinfoEntity tuserinfoByUiid;
@@ -61,16 +60,6 @@ public class TuserEntity {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "uiid")
-    public String getUiid() {
-        return uiid;
-    }
-
-    public void setUiid(String uiid) {
-        this.uiid = uiid;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,7 +71,7 @@ public class TuserEntity {
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (pwd != null ? !pwd.equals(that.pwd) : that.pwd != null) return false;
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (uiid != null ? !uiid.equals(that.uiid) : that.uiid != null) return false;
+        if (tuserinfoByUiid != null ? !tuserinfoByUiid.equals(that.tuserinfoByUiid) : that.tuserinfoByUiid != null) return false;
         if (token != null ? !token.equals(that.token) : that.token != null) return false;
 
         return true;
@@ -94,7 +83,7 @@ public class TuserEntity {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (pwd != null ? pwd.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (uiid != null ? uiid.hashCode() : 0);
+        result = 31 * result + (tuserinfoByUiid != null ? tuserinfoByUiid.hashCode() : 0);
         result = 31 * result + (token != null ? token.hashCode() : 0);
         return result;
     }

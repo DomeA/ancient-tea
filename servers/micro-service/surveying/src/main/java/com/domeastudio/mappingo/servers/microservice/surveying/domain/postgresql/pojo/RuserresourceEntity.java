@@ -8,8 +8,6 @@ import javax.persistence.*;
 @Table(name = "ruserresource", schema = "public", catalog = "postgres")
 public class RuserresourceEntity {
     private String id;
-    private String reid;
-    private String uid;
     private TresourceEntity tresourceByReid;
     private TuserEntity tuserByUid;
 
@@ -25,26 +23,6 @@ public class RuserresourceEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "reid")
-    public String getReid() {
-        return reid;
-    }
-
-    public void setReid(String reid) {
-        this.reid = reid;
-    }
-
-    @Basic
-    @Column(name = "uid")
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,8 +31,8 @@ public class RuserresourceEntity {
         RuserresourceEntity that = (RuserresourceEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (reid != null ? !reid.equals(that.reid) : that.reid != null) return false;
-        if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
+        if (tresourceByReid != null ? !tresourceByReid.equals(that.tresourceByReid) : that.tresourceByReid != null) return false;
+        if (tuserByUid != null ? !tuserByUid.equals(that.tuserByUid) : that.tuserByUid != null) return false;
 
         return true;
     }
@@ -62,8 +40,8 @@ public class RuserresourceEntity {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (reid != null ? reid.hashCode() : 0);
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (tresourceByReid != null ? tresourceByReid.hashCode() : 0);
+        result = 31 * result + (tuserByUid != null ? tuserByUid.hashCode() : 0);
         return result;
     }
 

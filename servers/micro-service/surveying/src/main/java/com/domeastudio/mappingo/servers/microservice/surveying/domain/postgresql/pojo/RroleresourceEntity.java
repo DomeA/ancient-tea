@@ -8,8 +8,6 @@ import javax.persistence.*;
 @Table(name = "rroleresource", schema = "public", catalog = "postgres")
 public class RroleresourceEntity {
     private String id;
-    private String reid;
-    private String rid;
     private TresourceEntity tresourceByReid;
     private TroleEntity troleByRid;
 
@@ -25,26 +23,6 @@ public class RroleresourceEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "reid")
-    public String getReid() {
-        return reid;
-    }
-
-    public void setReid(String reid) {
-        this.reid = reid;
-    }
-
-    @Basic
-    @Column(name = "rid")
-    public String getRid() {
-        return rid;
-    }
-
-    public void setRid(String rid) {
-        this.rid = rid;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,8 +31,8 @@ public class RroleresourceEntity {
         RroleresourceEntity that = (RroleresourceEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (reid != null ? !reid.equals(that.reid) : that.reid != null) return false;
-        if (rid != null ? !rid.equals(that.rid) : that.rid != null) return false;
+        if (tresourceByReid != null ? !tresourceByReid.equals(that.tresourceByReid) : that.tresourceByReid != null) return false;
+        if (troleByRid != null ? !troleByRid.equals(that.troleByRid) : that.troleByRid != null) return false;
 
         return true;
     }
@@ -62,8 +40,8 @@ public class RroleresourceEntity {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (reid != null ? reid.hashCode() : 0);
-        result = 31 * result + (rid != null ? rid.hashCode() : 0);
+        result = 31 * result + (tresourceByReid != null ? tresourceByReid.hashCode() : 0);
+        result = 31 * result + (troleByRid != null ? troleByRid.hashCode() : 0);
         return result;
     }
 

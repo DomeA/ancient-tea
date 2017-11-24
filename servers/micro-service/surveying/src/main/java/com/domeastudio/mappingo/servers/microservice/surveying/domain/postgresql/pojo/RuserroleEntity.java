@@ -8,8 +8,6 @@ import javax.persistence.*;
 @Table(name = "ruserrole", schema = "public", catalog = "postgres")
 public class RuserroleEntity {
     private String id;
-    private String rid;
-    private String uid;
     private TroleEntity troleByRid;
     private TuserEntity tuserByUid;
 
@@ -25,26 +23,6 @@ public class RuserroleEntity {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "rid")
-    public String getRid() {
-        return rid;
-    }
-
-    public void setRid(String rid) {
-        this.rid = rid;
-    }
-
-    @Basic
-    @Column(name = "uid")
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,8 +31,8 @@ public class RuserroleEntity {
         RuserroleEntity that = (RuserroleEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (rid != null ? !rid.equals(that.rid) : that.rid != null) return false;
-        if (uid != null ? !uid.equals(that.uid) : that.uid != null) return false;
+        if (troleByRid != null ? !troleByRid.equals(that.troleByRid) : that.troleByRid != null) return false;
+        if (tuserByUid != null ? !tuserByUid.equals(that.tuserByUid) : that.tuserByUid != null) return false;
 
         return true;
     }
@@ -62,8 +40,8 @@ public class RuserroleEntity {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (rid != null ? rid.hashCode() : 0);
-        result = 31 * result + (uid != null ? uid.hashCode() : 0);
+        result = 31 * result + (troleByRid != null ? troleByRid.hashCode() : 0);
+        result = 31 * result + (tuserByUid != null ? tuserByUid.hashCode() : 0);
         return result;
     }
 
