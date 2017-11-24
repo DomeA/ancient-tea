@@ -1,0 +1,56 @@
+spring:
+  profiles:
+    #选择使用下面哪个配置项
+    active: devProfile
+    #服务配置信息
+  cloud:
+    config:
+      #此处的config.profile会根据生效的active设置对应的值
+      profile: ${config.profile}
+      name: application
+      uri: http://localhost:8888
+      label: master
+      discovery:
+        service-id: configServer
+        enabled: true
+      enabled: true
+#  jpa:
+#    show-sql: true
+#    database: postgresql
+#    hibernate:
+#      ddl-auto: update
+#    database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
+  datasource:
+    primary:
+      url: jdbc:postgresql://localhost:5432/postgres?searchpath=public
+      username: postgres
+      password: domea
+      driver-class-name: org.postgresql.Driver
+#      platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
+    secondary:
+      url: jdbc:mysql://localhost:3306/test?characterEncoding=utf-8&useSSL=false
+      username: root
+      password: domea
+      driver-class-name: com.mysql.jdbc.Driver
+#      platform: org.hibernate.dialect.MySQLDialect
+
+server:
+  port: 8050
+#将不同的配置组以---分割，并通过spring.profiles定义每组的名字，方便后续引用
+#---
+#spring:
+#  profiles: testProfile
+#config:
+#  profile: test
+#
+#---
+#spring:
+#  profiles: devProfile
+#config:
+#  profile: dev
+#
+#---
+#spring:
+#  profiles: prodProfile
+#config:
+#  profile: prod

@@ -1,0 +1,20 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This is a sample for swagger-maven-plugin",
+    "version" : "v1",
+    "title" : "RTP REST APIs",
+    "contact" : {
+      "name" : "DomeA",
+      "url" : "http://www.domeastudio.com",
+      "email" : "domeastudio@gmail.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host" : "petstore.swagger.wordnik.com",
+  "basePath" : "/rtprest/rest",
+  "schemes" : [ "http" ]
+}
