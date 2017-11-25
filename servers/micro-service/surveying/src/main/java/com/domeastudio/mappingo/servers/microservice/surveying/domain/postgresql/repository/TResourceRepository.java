@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TResourceRepository extends CrudRepository<TresourceEntity,String> {
+    TresourceEntity findByName(String name);
 }

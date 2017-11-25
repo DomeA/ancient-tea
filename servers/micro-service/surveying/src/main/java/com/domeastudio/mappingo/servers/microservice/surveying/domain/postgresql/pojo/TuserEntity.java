@@ -13,6 +13,7 @@ public class TuserEntity {
     private String name;
     private String pwd;
     private String email;
+    private String phone;
     private String token;
     private Set<RuserresourceEntity> ruserresourcesByUid;
     private Set<RuserroleEntity> ruserrolesByUid;
@@ -73,6 +74,7 @@ public class TuserEntity {
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
         if (tuserinfoByUiid != null ? !tuserinfoByUiid.equals(that.tuserinfoByUiid) : that.tuserinfoByUiid != null) return false;
         if (token != null ? !token.equals(that.token) : that.token != null) return false;
+        if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
 
         return true;
     }
@@ -85,6 +87,7 @@ public class TuserEntity {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (tuserinfoByUiid != null ? tuserinfoByUiid.hashCode() : 0);
         result = 31 * result + (token != null ? token.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
         return result;
     }
 
@@ -124,5 +127,15 @@ public class TuserEntity {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @Basic
+    @Column(name = "phone",length = 11)
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
