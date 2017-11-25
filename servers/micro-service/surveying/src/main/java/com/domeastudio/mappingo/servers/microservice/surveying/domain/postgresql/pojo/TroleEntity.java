@@ -11,6 +11,7 @@ import java.util.Set;
 public class TroleEntity {
     private String rid;
     private String name;
+    private String describe;
     private Set<RroleresourceEntity> rroleresourcesByRid;
     private Set<RuserroleEntity> ruserrolesByRid;
 
@@ -45,6 +46,7 @@ public class TroleEntity {
 
         if (rid != null ? !rid.equals(that.rid) : that.rid != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (describe != null ? !describe.equals(that.describe) : that.describe != null) return false;
 
         return true;
     }
@@ -53,6 +55,7 @@ public class TroleEntity {
     public int hashCode() {
         int result = rid != null ? rid.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (describe != null ? describe.hashCode() : 0);
         return result;
     }
 
@@ -72,5 +75,14 @@ public class TroleEntity {
 
     public void setRuserrolesByRid(Set<RuserroleEntity> ruserrolesByRid) {
         this.ruserrolesByRid = ruserrolesByRid;
+    }
+    @Basic
+    @Column(name = "describe")
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 }

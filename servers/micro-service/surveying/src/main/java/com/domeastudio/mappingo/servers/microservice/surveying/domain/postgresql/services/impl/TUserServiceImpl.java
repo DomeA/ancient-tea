@@ -93,27 +93,41 @@ public class TUserServiceImpl implements TUserService {
     }
 
     @Override
-    public void createUser(String name, String pwd,String email, String phone) {
+    public Boolean createUser(String name, String pwd,String email, String phone) {
+        if(tUserRepository.findByNameOrEmailOrPhone(name)!=null||
+                tUserRepository.findByNameOrEmailOrPhone(email)!=null||
+                tUserRepository.findByNameOrEmailOrPhone(phone)!=null){
+            return false;
+        }
         TuserEntity tuserEntity=new TuserEntity();
         tuserEntity.setEmail(email);
         tuserEntity.setName(name);
         tuserEntity.setPwd(pwd);
         tuserEntity.setPhone(phone);
         save(tuserEntity);
+        return true;
     }
 
     @Override
-    public void createRole(String name) {
+    public Boolean createRole(String name) {
+        if(tRoleRepository.findByName(name)!=null){
+            return false;
+        }
         TroleEntity troleEntity=new TroleEntity();
         troleEntity.setName(name);
         save(troleEntity);
+        return true;
     }
 
     @Override
-    public void createResource(String name) {
+    public Boolean createResource(String name) {
+        if(tResourceRepository.findByName(name)!=null){
+            return false;
+        }
         TresourceEntity tresourceEntity=new TresourceEntity();
         tresourceEntity.setName(name);
         save(tresourceEntity);
+        return true;
     }
 
     @Override
