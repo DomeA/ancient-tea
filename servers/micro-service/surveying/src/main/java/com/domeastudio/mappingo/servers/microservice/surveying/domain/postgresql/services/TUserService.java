@@ -24,7 +24,7 @@ public interface TUserService {
     TuserEntity findByNameOrEmailOrPhone(String param);
     List<String> findRoleName(TuserEntity entity);
     Boolean createUser(String name,String pwd,String email,String phone);
-    Boolean createRole(String name);
+    Boolean createRole(String name,String describe);
     Boolean createResource(String name);
 
     void allocationUserRole(TuserEntity tuserEntity,TroleEntity troleEntity);

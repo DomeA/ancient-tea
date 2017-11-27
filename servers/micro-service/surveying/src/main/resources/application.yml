@@ -36,6 +36,8 @@ spring:
       username: root
       password: domea
       driver-class-name: com.mysql.jdbc.Driver
+  white-list:
+    service-filter: /login,/register
 
 server:
   port: 8050

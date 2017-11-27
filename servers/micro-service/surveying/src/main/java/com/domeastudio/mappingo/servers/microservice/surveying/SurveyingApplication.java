@@ -1,13 +1,19 @@
 package com.domeastudio.mappingo.servers.microservice.surveying;
 
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class SurveyingApplication {
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     public static void main(String[] args) throws Exception {
         SpringApplication.run(SurveyingApplication.class, args);
     }
@@ -20,10 +26,24 @@ public class SurveyingApplication {
     @Autowired
     public void init(){
         try {
-            tUserService.createUser("system","domea","domeastudio@hotmail.com","18182669306");
-            tUserService.createRole("ROLE_SYSADMIN");
-            tUserService.createRole("ROLE_SIGHTSEER");
-
+            Boolean uf=tUserService.createUser("system","domea","domeastudio@hotmail.com","18182669306");
+            Boolean rf1=tUserService.createRole("ROLE_SYSADMIN","系统管理员角色");
+            Boolean rf2=tUserService.createRole("ROLE_SIGHTSEER","默认角色,游客角色");
+            if(uf){
+                System.out.println("管理员账户：system 创建成功");
+            }else{
+                System.out.println("管理员账户：system 已经存在");
+            }
+            if(rf1){
+                System.out.println("系统管理员角色：ROLE_SYSADMIN 创建成功");
+            }else{
+                System.out.println("系统管理员角色：ROLE_SYSADMIN 已经存在");
+            }
+            if(rf2){
+                System.out.println("系统管理员角色：ROLE_SIGHTSEER 创建成功");
+            }else{
+                System.out.println("系统管理员角色：ROLE_SIGHTSEER 已经存在");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

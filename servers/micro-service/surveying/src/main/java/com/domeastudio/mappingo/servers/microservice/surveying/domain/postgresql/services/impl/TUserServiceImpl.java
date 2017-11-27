@@ -27,7 +27,11 @@ public class TUserServiceImpl implements TUserService {
 
     @Override
     public TuserEntity login(String param, String pwd) {
-        return tUserRepository.findByNameOrEmailOrPhone(param,pwd);
+        TuserEntity tuserEntity=null;
+        tuserEntity=tUserRepository.findByNameAndPwd(param,pwd);
+        tuserEntity=tUserRepository.findByEmailAndPwd(param,pwd);
+        tuserEntity=tUserRepository.findByPhoneAndPwd(param,pwd);
+        return tuserEntity;
     }
 
     @Override
@@ -77,7 +81,11 @@ public class TUserServiceImpl implements TUserService {
 
     @Override
     public TuserEntity findByNameOrEmailOrPhone(String param) {
-        return tUserRepository.findByNameOrEmailOrPhone(param);
+        TuserEntity tuserEntity=null;
+        tuserEntity = tUserRepository.findByPhone(param);
+        tuserEntity=tUserRepository.findByEmail(param);
+        tuserEntity=tUserRepository.findByName(param);
+        return tuserEntity;
     }
 
     @Override
@@ -94,9 +102,9 @@ public class TUserServiceImpl implements TUserService {
 
     @Override
     public Boolean createUser(String name, String pwd,String email, String phone) {
-        if(tUserRepository.findByNameOrEmailOrPhone(name)!=null||
-                tUserRepository.findByNameOrEmailOrPhone(email)!=null||
-                tUserRepository.findByNameOrEmailOrPhone(phone)!=null){
+        if(tUserRepository.findByName(name)!=null||
+                tUserRepository.findByEmail(email)!=null||
+                tUserRepository.findByPhone(phone)!=null){
             return false;
         }
         TuserEntity tuserEntity=new TuserEntity();
@@ -109,12 +117,13 @@ public class TUserServiceImpl implements TUserService {
     }
 
     @Override
-    public Boolean createRole(String name) {
+    public Boolean createRole(String name,String describe) {
         if(tRoleRepository.findByName(name)!=null){
             return false;
         }
         TroleEntity troleEntity=new TroleEntity();
         troleEntity.setName(name);
+        troleEntity.setDescribe(describe);
         save(troleEntity);
         return true;
     }
@@ -126,6 +135,7 @@ public class TUserServiceImpl implements TUserService {
         }
         TresourceEntity tresourceEntity=new TresourceEntity();
         tresourceEntity.setName(name);
+
         save(tresourceEntity);
         return true;
     }

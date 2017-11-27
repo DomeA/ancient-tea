@@ -4,10 +4,15 @@ import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.request.Register;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
+//@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/manager")
 public class DataAPI {
@@ -15,35 +20,44 @@ public class DataAPI {
     @Autowired
     TUserService tUserService;
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public void login(@RequestBody Login login){
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    public String login(@RequestBody Login login){
         TuserEntity t = null;
-        t=tUserService.login(login.getName(),login.getPwd());
+        t=tUserService.login(login.getUsername(),bCryptPasswordEncoder.encode(login.getPassword()));
         if(t!=null){
-
+            String jwtToken = Jwts.builder().setSubject(t.getUid()).claim("roles", "user").setIssuedAt(new Date())
+                    .signWith(SignatureAlgorithm.HS256, "secretkey").compact();
+            return jwtToken;
         }else{
-
+            return null;
         }
     }
 
-    @RequestMapping(value = "/user",method = RequestMethod.POST)
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
+    public String test(){
+        return "hello world";
+    }
+
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
     public void addUSer(@RequestBody Register register){
-        tUserService.createUser(register.getName(),register.getPwd(),register.getEmail(),register.getPhone());
+        Boolean f = tUserService.createUser(register.getName(),bCryptPasswordEncoder.encode(register.getPwd()),register.getEmail(),register.getPhone());
+        System.out.println("用户："+register.getName()+(f?"成功！":"已经存在"));
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/role",method = RequestMethod.POST)
-    public void addRole(@RequestParam("name") String name){
-        tUserService.createRole(name);
+    public void addRole(@RequestParam("name") String name,@RequestParam("describe") String describe){
+        Boolean f = tUserService.createRole(name,describe);
+        System.out.println("角色："+name+(f?"成功！":"已经存在"));
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/resource",method = RequestMethod.POST)
     public void addResource(@RequestParam("name") String name){
         tUserService.createResource(name);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
     @RequestMapping(value = "/allocation/{uid}/{rid}",method = RequestMethod.GET)
     public void allocationUserRole(@PathVariable String uid,@PathVariable String rid){
         tUserService.allocationUserRole(tUserService.findUserOne(uid),tUserService.findRoleOne(rid));
