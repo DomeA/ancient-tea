@@ -1,5 +1,7 @@
 package com.domeastudio.mappingo.servers.microservice.surveying;
 
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TroleEntity;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,11 @@ public class SurveyingApplication {
             Boolean uf=tUserService.createUser("system", MD5Utils.getMD5("domea"+salt),salt,"domeastudio@hotmail.com","18182669306");
             Boolean rf1=tUserService.createRole("ROLE_SYSADMIN","系统管理员角色");
             Boolean rf2=tUserService.createRole("ROLE_SIGHTSEER","默认角色,游客角色");
+
+            TuserEntity tuserEntity=tUserService.findUserByName("system");
+            TroleEntity troleEntity=tUserService.findRoleByName("ROLE_SYSADMIN");
+            tUserService.allocationUserRole(tuserEntity,troleEntity);
+
             if(uf){
                 System.out.println("管理员账户：system 创建成功");
             }else{

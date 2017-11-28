@@ -12,11 +12,11 @@ import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
-    public static Claims parseJWT(String jsonWebToken, String base64Security){
+    public static Claims parseJWT(String jsonWebToken, String clientId){
         try
         {
             Claims claims = Jwts.parser()
-                    .setSigningKey(DatatypeConverter.parseBase64Binary(base64Security))
+                    .setSigningKey(DatatypeConverter.parseBase64Binary(clientId))
                     .parseClaimsJws(jsonWebToken).getBody();
             return claims;
         }
@@ -27,7 +27,7 @@ public class JwtUtil {
     }
 
     public static String createJWT(String name, String userId, String role,
-                                   String audience, String issuer, long TTLMillis, String base64Security)
+                                   String audience, String issuer, long TTLMillis, String clientId)
     {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
@@ -35,7 +35,7 @@ public class JwtUtil {
         Date now = new Date(nowMillis);
 
         //生成签名密钥
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(base64Security);
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(clientId);
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
         //添加构成JWT的参数

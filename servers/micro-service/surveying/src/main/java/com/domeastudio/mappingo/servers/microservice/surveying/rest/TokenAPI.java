@@ -5,6 +5,7 @@ import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.AccessToken;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultMsg;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultStatusCode;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.RuserroleEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.JwtUtil;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/oauth")
@@ -44,6 +47,13 @@ public class TokenAPI {
 
             //验证用户名密码
             TuserEntity user = tUserService.findUserByName(loginPara.getUserName());
+            List<String> roleByName=tUserService.findRoleByName(user);
+            StringBuilder stringBuilder=new StringBuilder();
+            if(roleByName.size()>0){
+                for(String role:roleByName){
+                    stringBuilder.append(role);
+                }
+            }
             if (user == null)
             {
                 resultMsg = new ResultMsg(ResultStatusCode.INVALID_PASSWORD.getErrcode(),
@@ -63,9 +73,9 @@ public class TokenAPI {
             }
 
             //拼装accessToken
-            String accessToken = JwtUtil.createJWT(loginPara.getUserName(), String.valueOf(user.getName()),
-                    "admin,system", audienceEntity.getClientId(), audienceEntity.getName(),
-                    audienceEntity.getExpiresSecond() * 1000, audienceEntity.getBase64Secret());
+            String accessToken = JwtUtil.createJWT(loginPara.getUserName(), user.getUid(),
+                    stringBuilder.toString(), audienceEntity.getClientId(), audienceEntity.getName(),
+                    audienceEntity.getExpiresSecond() * 1000, audienceEntity.getClientId());
 
             //返回accessToken
             AccessToken accessTokenEntity = new AccessToken();

@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("spring.audience")
 public class Audience {
     private String clientId;
-    private String base64Secret;
     private String name;
     private int expiresSecond;
     public String getClientId() {
@@ -16,12 +15,6 @@ public class Audience {
     }
     public void setClientId(String clientId) {
         this.clientId = clientId;
-    }
-    public String getBase64Secret() {
-        return base64Secret;
-    }
-    public void setBase64Secret(String base64Secret) {
-        this.base64Secret = base64Secret;
     }
     public String getName() {
         return name;

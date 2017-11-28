@@ -38,7 +38,7 @@ public class JWTAuthenticationFilter implements Filter {
             {
 
                 auth = auth.substring(7, auth.length());
-                if (JwtUtil.parseJWT(auth, audienceEntity.getBase64Secret()) != null)
+                if (JwtUtil.parseJWT(auth, audienceEntity.getClientId()) != null)
                 {
                     filterChain.doFilter(servletRequest, servletResponse);
                     return;
