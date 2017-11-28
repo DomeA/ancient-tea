@@ -1,46 +1,59 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.util;
 
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
+import java.security.Key;
 import java.util.Date;
 
-import static java.util.Collections.emptyList;
-
 public class JwtUtil {
-    static final long EXPIRATIONTIME = 1000*60*60*24*1; // 1 days
-    static final String SECRET = "ThisIsASecret";
-    static final String TOKEN_PREFIX = "Bearer";
-    static final String HEADER_STRING = "Authorization";
-
-    public static void addAuthentication(HttpServletResponse res, String username) {
-        String JWT = Jwts.builder()
-                .setSubject(username)
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
-                .signWith(SignatureAlgorithm.HS512, SECRET)
-                .compact();
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
+    public static Claims parseJWT(String jsonWebToken, String base64Security){
+        try
+        {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(DatatypeConverter.parseBase64Binary(base64Security))
+                    .parseClaimsJws(jsonWebToken).getBody();
+            return claims;
+        }
+        catch(Exception ex)
+        {
+            return null;
+        }
     }
 
-    public static Authentication getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(HEADER_STRING);
-        if (token != null) {
-            // parse the token.
-            String user = Jwts.parser()
-                    .setSigningKey(SECRET)
-                    .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                    .getBody()
-                    .getSubject();
+    public static String createJWT(String name, String userId, String role,
+                                   String audience, String issuer, long TTLMillis, String base64Security)
+    {
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
-            return user != null ?
-                    new UsernamePasswordAuthenticationToken(user, null, emptyList()) :
-                    null;
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+
+        //生成签名密钥
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(base64Security);
+        Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+
+        //添加构成JWT的参数
+        JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
+                .claim("role", role)
+                .claim("unique_name", name)
+                .claim("userid", userId)
+                .setIssuer(issuer)
+                .setAudience(audience)
+                .signWith(signatureAlgorithm, signingKey);
+        //添加Token过期时间
+        if (TTLMillis >= 0) {
+            long expMillis = nowMillis + TTLMillis;
+            Date exp = new Date(expMillis);
+            builder.setExpiration(exp).setNotBefore(now);
         }
-        return null;
+
+        //生成JWT
+        return builder.compact();
     }
 }

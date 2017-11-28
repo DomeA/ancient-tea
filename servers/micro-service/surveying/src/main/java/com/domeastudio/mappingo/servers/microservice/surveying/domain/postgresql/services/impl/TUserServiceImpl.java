@@ -101,7 +101,7 @@ public class TUserServiceImpl implements TUserService {
     }
 
     @Override
-    public Boolean createUser(String name, String pwd,String email, String phone) {
+    public Boolean createUser(String name, String pwd,String salt,String email, String phone) {
         if(tUserRepository.findByName(name)!=null||
                 tUserRepository.findByEmail(email)!=null||
                 tUserRepository.findByPhone(phone)!=null){
@@ -112,6 +112,7 @@ public class TUserServiceImpl implements TUserService {
         tuserEntity.setName(name);
         tuserEntity.setPwd(pwd);
         tuserEntity.setPhone(phone);
+        tuserEntity.setSalt(salt);
         save(tuserEntity);
         return true;
     }

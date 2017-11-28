@@ -23,7 +23,7 @@ public interface TUserService {
     void save(TresourceEntity tresourceEntity);
     TuserEntity findByNameOrEmailOrPhone(String param);
     List<String> findRoleName(TuserEntity entity);
-    Boolean createUser(String name,String pwd,String email,String phone);
+    Boolean createUser(String name,String pwd,String salt,String email,String phone);
     Boolean createRole(String name,String describe);
     Boolean createResource(String name);
 

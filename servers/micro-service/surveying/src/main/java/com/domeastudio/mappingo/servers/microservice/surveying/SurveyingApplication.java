@@ -1,18 +1,13 @@
 package com.domeastudio.mappingo.servers.microservice.surveying;
 
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 public class SurveyingApplication {
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(SurveyingApplication.class, args);
@@ -26,7 +21,9 @@ public class SurveyingApplication {
     @Autowired
     public void init(){
         try {
-            Boolean uf=tUserService.createUser("system","domea","domeastudio@hotmail.com","18182669306");
+            String salt="qwertyuiop123456789";
+
+            Boolean uf=tUserService.createUser("system", MD5Utils.getMD5("domea"+salt),salt,"domeastudio@hotmail.com","18182669306");
             Boolean rf1=tUserService.createRole("ROLE_SYSADMIN","系统管理员角色");
             Boolean rf2=tUserService.createRole("ROLE_SIGHTSEER","默认角色,游客角色");
             if(uf){
