@@ -2,4 +2,5 @@ package com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.s
 
 public interface UserService {
     void saveUser();
+    String findByName(String name);
 }

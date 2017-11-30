@@ -1,21 +1,24 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo;
 
-import org.hibernate.annotations.GenericGenerator;
+import com.mongodb.util.JSON;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "musers",schema="test")
+@Document(collection="order_info")
 public class MUsersEntity {
-    @Column(name="name")
-    private String name;
-    @Column(name="pwd")
-    private String pwd;
     @Id
-    @GeneratedValue(generator = "autoid")
-    @GenericGenerator(name = "autoid", strategy = "uuid")
-    @Column(name = "id")
     private String id;
+
+    private String name;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -25,19 +28,8 @@ public class MUsersEntity {
         this.name = name;
     }
 
-    public String getPwd() {
-        return pwd;
-    }
-
-    public void setPwd(String pwd) {
-        this.pwd = pwd;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return JSON.serialize(this);
     }
 }

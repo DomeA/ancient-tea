@@ -5,7 +5,6 @@ import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.AccessToken;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultMsg;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultStatusCode;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.RuserroleEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.JwtUtil;

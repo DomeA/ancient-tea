@@ -1,11 +1,14 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.rest;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services.UserService;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.request.Register;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
-//@CrossOrigin("*")
+@Api("测绘数据管理服务")
 @RestController
 @RequestMapping("/manager")
 public class DataAPI {
@@ -13,7 +16,19 @@ public class DataAPI {
     @Autowired
     TUserService tUserService;
 
+    @Autowired
+    UserService userService;
 
+    @RequestMapping(value = "/testmongo",method = RequestMethod.GET)
+    public String getMongodbTest(){
+        userService.saveUser();
+        return userService.findByName("domea1234");
+    }
+
+
+
+    @ApiOperation(value = "用于测试服务是否正常", notes = "", httpMethod = "GET")
+    @ApiResponse(code = 200, message = "String", response = String.class)
     @RequestMapping(value = "/test",method = RequestMethod.GET)
     public String test(){
         return "hello world";

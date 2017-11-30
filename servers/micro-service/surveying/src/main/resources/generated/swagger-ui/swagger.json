@@ -16,5 +16,26 @@
   },
   "host" : "loaclhost",
   "basePath" : "/microservice/rest",
-  "schemes" : [ "http" ]
+  "tags" : [ {
+    "name" : "测绘数据管理服务"
+  } ],
+  "schemes" : [ "http" ],
+  "paths" : {
+    "/manager/test" : {
+      "get" : {
+        "tags" : [ "测绘数据管理服务" ],
+        "summary" : "用于测试服务是否正常",
+        "description" : "",
+        "operationId" : "test",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        }
+      }
+    }
+  }
 }

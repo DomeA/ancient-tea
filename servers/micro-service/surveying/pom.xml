@@ -21,10 +21,14 @@
             <!--<artifactId>spring-boot-starter-security</artifactId>-->
         <!--</dependency>-->
         <!-- https://mvnrepository.com/artifact/oracle/ojdbc6 -->
+        <!--<dependency>-->
+            <!--<groupId>oracle</groupId>-->
+            <!--<artifactId>ojdbc6</artifactId>-->
+            <!--<version>11.2.0.3</version>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>oracle</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>11.2.0.3</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

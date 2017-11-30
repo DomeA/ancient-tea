@@ -21,11 +21,13 @@ spring:
 #      ddl-auto: update
 #    database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
   datasource:
-    fourth:
-      url: jdbc:oracle:thin:@localhost:1521:xe
-      username: postgres
-      password: domea
-      driver-class-name: oracle.jdbc.driver.OracleDriver
+#    fourth:
+#      uri: mongodb://root:root@localhost:27017/test
+#      database:
+#      host: loaclhost
+#      port: 27017
+#      username: root
+#      password: root
     third:
       url: jdbc:postgresql://localhost:5432/postgisdb?searchpath=public
       username: postgres
@@ -47,6 +49,13 @@ spring:
     clientId: 098f6bcd4621d373cade4e832627b4f6
     name: restapiuser
     expiresSecond: 172800
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: test
+      username:
+      password:
 server:
   port: 8050
 #将不同的配置组以---分割，并通过spring.profiles定义每组的名字，方便后续引用

@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-@Transactional(value = "transactionManagerSecondary")
 public class UserServiceImpl implements UserService {
     @Autowired
     MUsersRepository mUsersRepository;
@@ -18,8 +17,14 @@ public class UserServiceImpl implements UserService {
     public void saveUser() {
         MUsersEntity m=new MUsersEntity();
 
-        m.setName("mdomea11111");
-        m.setPwd("ddcc111");
+        m.setName("domea1234");
+        m.setId("dddddsq121234234324");
         mUsersRepository.save(m);
+    }
+
+    @Override
+    public String findByName(String name) {
+        MUsersEntity u= mUsersRepository.findByName(name);
+        return u.toString();
     }
 }
