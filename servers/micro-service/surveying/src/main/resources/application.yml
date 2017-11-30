@@ -21,6 +21,11 @@ spring:
 #      ddl-auto: update
 #    database-platform: org.hibernate.spatial.dialect.postgis.PostgisDialect
   datasource:
+    fourth:
+      url: jdbc:oracle:thin:@localhost:1521:xe
+      username: postgres
+      password: domea
+      driver-class-name: oracle.jdbc.driver.OracleDriver
     third:
       url: jdbc:postgresql://localhost:5432/postgisdb?searchpath=public
       username: postgres

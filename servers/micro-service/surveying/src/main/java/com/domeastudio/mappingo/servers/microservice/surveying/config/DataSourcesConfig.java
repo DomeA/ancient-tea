@@ -34,4 +34,11 @@ public class DataSourcesConfig {
         return DataSourceBuilder.create().build();
     }
 
+    @Bean(name = "fourthDataSource")
+    @Qualifier("fourthDataSource")
+    @ConfigurationProperties(prefix="spring.datasource.fourth")
+    public DataSource fourthDataSource() {
+        return DataSourceBuilder.create().build();
+    }
+
 }
