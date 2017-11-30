@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Created by domea on 17-5-29.
  */
-@Api()
+@Api("gis 空间处理服务")
 @RestController
 @RequestMapping
 public class GISProcessAPI {
