@@ -27,7 +27,7 @@ import java.util.Map;
         transactionManagerRef = "transactionManagerFourth",
         basePackages = {"com.domeastudio.mappingo.servers.microservice.surveying.domain.oracle.repository"})
 //设置Repository所在位置
-public class fourthConfig {
+public class FourthConfig {
     @Autowired
     @Qualifier("fourthDataSource")
     private DataSource fourthDataSource;
