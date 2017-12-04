@@ -25,7 +25,7 @@ public class SurveyingApplication {
     @Autowired
     public void init(){
         try {
-            Boolean uf=tUserService.createUser("system", "domea","domeastudio@hotmail.com","18182669306");
+            Boolean uf=tUserService.createUser("system", "domea","domeastudio@hotmail.com","18182669306",999999);
             Boolean rf1=tUserService.createRole("ROLE_SYSADMIN","系统管理员角色");
             Boolean rf2=tUserService.createRole("ROLE_SIGHTSEER","默认角色,游客角色");
 

@@ -8,6 +8,7 @@ public class Register {
     private String pwd;
     private String email;
     private String phone;
+    private Integer term;
 
     public String getName() {
         return name;
@@ -39,5 +40,13 @@ public class Register {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Integer getTerm() {
+        return term;
+    }
+
+    public void setTerm(Integer term) {
+        this.term = term;
     }
 }
