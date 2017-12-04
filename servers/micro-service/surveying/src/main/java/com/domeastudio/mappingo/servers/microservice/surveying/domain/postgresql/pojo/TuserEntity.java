@@ -16,6 +16,8 @@ public class TuserEntity {
     private String phone;
     private String salt;
     private String token;
+    private Integer authorTime;
+    private String registTime;
     private Set<RuserresourceEntity> ruserresourcesByUid;
     private Set<RuserroleEntity> ruserrolesByUid;
     private TuserinfoEntity tuserinfoByUiid;
@@ -77,6 +79,8 @@ public class TuserEntity {
         if (token != null ? !token.equals(that.token) : that.token != null) return false;
         if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
         if (salt != null ? !salt.equals(that.salt) : that.salt != null) return false;
+        if (authorTime != null ? !authorTime.equals(that.authorTime) : that.authorTime != null) return false;
+        if (registTime != null ? !registTime.equals(that.registTime) : that.registTime != null) return false;
 
         return true;
     }
@@ -91,6 +95,8 @@ public class TuserEntity {
         result = 31 * result + (token != null ? token.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (salt != null ? salt.hashCode() : 0);
+        result = 31 * result + (authorTime != null ? authorTime.hashCode() : 0);
+        result = 31 * result + (registTime != null ? registTime.hashCode() : 0);
         return result;
     }
 
@@ -150,5 +156,24 @@ public class TuserEntity {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @Basic
+    @Column(name = "authorTime")
+    public Integer getAuthorTime() {
+        return authorTime;
+    }
+
+    public void setAuthorTime(Integer authorTime) {
+        this.authorTime = authorTime;
+    }
+    @Basic
+    @Column(name = "registTime")
+    public String getRegistTime() {
+        return registTime;
+    }
+
+    public void setRegistTime(String registTime) {
+        this.registTime = registTime;
     }
 }
