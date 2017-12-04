@@ -31,10 +31,11 @@ public class SurveyingApplication {
 
             TuserEntity tuserEntity=tUserService.findUserByName("system");
             TroleEntity troleEntity=tUserService.findRoleByName("ROLE_SYSADMIN");
-            tUserService.allocationUserRole(tuserEntity,troleEntity);
+            Boolean urf=tUserService.allocationUserRole(tuserEntity,troleEntity);
 
             if(uf){
                 System.out.println("管理员账户：system 创建成功");
+                System.out.println("管理员账户clientId："+tuserEntity.getClientId());
             }else{
                 System.out.println("管理员账户：system 已经存在");
             }
@@ -47,6 +48,10 @@ public class SurveyingApplication {
                 System.out.println("系统管理员角色：ROLE_SIGHTSEER 创建成功");
             }else{
                 System.out.println("系统管理员角色：ROLE_SIGHTSEER 已经存在");
+            }if(urf){
+                System.out.println("管理员账户：[system] 被赋予 系统管理员角色：[ROLE_SIGHTSEER] 成功");
+            }else{
+                System.out.println("管理员账户：[system] 被赋予 系统管理员角色：[ROLE_SIGHTSEER] 已经存在");
             }
         } catch (Exception e) {
             e.printStackTrace();

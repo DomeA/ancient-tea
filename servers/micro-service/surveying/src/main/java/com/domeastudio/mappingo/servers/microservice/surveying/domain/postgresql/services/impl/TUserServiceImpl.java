@@ -4,6 +4,7 @@ import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.repository.*;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.MD5Utils;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.security.MD5SHAHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,8 @@ public class TUserServiceImpl implements TUserService {
         if(tuserEntity==null){
             return null;
         }else {
-            String md5Password = MD5Utils.getMD5(pwd+tuserEntity.getSalt());
+
+            String md5Password = MD5SHAHelper.toString(MD5SHAHelper.encryptByMD5((pwd+tuserEntity.getSalt()).getBytes()));
             if (md5Password.compareTo(tuserEntity.getPwd()) != 0)
             {
                 return null;
@@ -127,7 +129,8 @@ public class TUserServiceImpl implements TUserService {
         TuserEntity tuserEntity=new TuserEntity();
         tuserEntity.setEmail(email);
         tuserEntity.setName(name);
-        tuserEntity.setPwd(MD5Utils.getMD5(pwd+salt));
+        String pwdstr=MD5SHAHelper.toString(MD5SHAHelper.encryptByMD5((pwd+salt).getBytes()));
+        tuserEntity.setPwd(pwdstr);
         tuserEntity.setPhone(phone);
         tuserEntity.setSalt(salt);
         String clientId=UUID.randomUUID().toString().replace("-","");
@@ -161,26 +164,38 @@ public class TUserServiceImpl implements TUserService {
     }
 
     @Override
-    public void allocationUserRole(TuserEntity tuserEntity, TroleEntity troleEntity) {
-        RuserroleEntity ruserroleEntity=new RuserroleEntity();
-        ruserroleEntity.setTuserByUid(tuserEntity);
-        ruserroleEntity.setTroleByRid(troleEntity);
-        rUserRoleRepository.save(ruserroleEntity);
+    public Boolean allocationUserRole(TuserEntity tuserEntity, TroleEntity troleEntity) {
+        if(rUserRoleRepository.findByTuserByUidAndTroleByRid(tuserEntity,troleEntity)==null) {
+            RuserroleEntity ruserroleEntity = new RuserroleEntity();
+            ruserroleEntity.setTuserByUid(tuserEntity);
+            ruserroleEntity.setTroleByRid(troleEntity);
+            rUserRoleRepository.save(ruserroleEntity);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void allocationUserResource(TuserEntity tuserEntity, TresourceEntity tresourceEntity) {
-        RuserresourceEntity ruserresourceEntity=new RuserresourceEntity();
-        ruserresourceEntity.setTresourceByReid(tresourceEntity);
-        ruserresourceEntity.setTuserByUid(tuserEntity);
-        rUserResourceRepository.save(ruserresourceEntity);
+    public Boolean allocationUserResource(TuserEntity tuserEntity, TresourceEntity tresourceEntity) {
+        if(rUserResourceRepository.findByTuserByUidAndTresourceByReid(tuserEntity,tresourceEntity)==null) {
+            RuserresourceEntity ruserresourceEntity = new RuserresourceEntity();
+            ruserresourceEntity.setTresourceByReid(tresourceEntity);
+            ruserresourceEntity.setTuserByUid(tuserEntity);
+            rUserResourceRepository.save(ruserresourceEntity);
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void allocationRoleResource(TroleEntity troleEntity, TresourceEntity tresourceEntity) {
-        RroleresourceEntity rroleresourceEntity=new RroleresourceEntity();
-        rroleresourceEntity.setTresourceByReid(tresourceEntity);
-        rroleresourceEntity.setTroleByRid(troleEntity);
-        rRoleResourceRepository.save(rroleresourceEntity);
+    public Boolean allocationRoleResource(TroleEntity troleEntity, TresourceEntity tresourceEntity) {
+        if(rRoleResourceRepository.findByTroleByRidAndTresourceByReid(troleEntity,tresourceEntity)==null) {
+            RroleresourceEntity rroleresourceEntity = new RroleresourceEntity();
+            rroleresourceEntity.setTresourceByReid(tresourceEntity);
+            rroleresourceEntity.setTroleByRid(troleEntity);
+            rRoleResourceRepository.save(rroleresourceEntity);
+            return true;
+        }
+        return false;
     }
 }

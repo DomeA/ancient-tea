@@ -28,7 +28,7 @@ public interface TUserService {
     Boolean createRole(String name,String describe);
     Boolean createResource(String name);
 
-    void allocationUserRole(TuserEntity tuserEntity,TroleEntity troleEntity);
-    void allocationUserResource(TuserEntity tuserEntity,TresourceEntity tresourceEntity);
-    void allocationRoleResource(TroleEntity troleEntity,TresourceEntity tresourceEntity);
+    Boolean allocationUserRole(TuserEntity tuserEntity,TroleEntity troleEntity);
+    Boolean allocationUserResource(TuserEntity tuserEntity,TresourceEntity tresourceEntity);
+    Boolean allocationRoleResource(TroleEntity troleEntity,TresourceEntity tresourceEntity);
 }
