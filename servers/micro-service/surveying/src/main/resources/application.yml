@@ -46,7 +46,6 @@ spring:
   white-list:
     service-filter: /manager/*
   audience:
-    clientId: 098f6bcd4621d373cade4e832627b4f6
     name: restapiuser
     expiresSecond: 172800
   data:
@@ -58,6 +57,8 @@ spring:
       password:
 server:
   port: 8050
+flowable:
+  check-process-definitions: false
 #将不同的配置组以---分割，并通过spring.profiles定义每组的名字，方便后续引用
 #---
 #spring:

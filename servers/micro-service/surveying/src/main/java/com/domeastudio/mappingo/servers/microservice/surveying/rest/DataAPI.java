@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @Api("测绘数据管理服务")
 @RestController
 @RequestMapping("/manager")
@@ -19,27 +21,11 @@ public class DataAPI {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/testmongo",method = RequestMethod.GET)
-    public String getMongodbTest(){
-        userService.saveUser();
-        return userService.findByName("domea1234");
-    }
-
-
-
     @ApiOperation(value = "用于测试服务是否正常", notes = "", httpMethod = "GET")
     @ApiResponse(code = 200, message = "String", response = String.class)
     @RequestMapping(value = "/test",method = RequestMethod.GET)
     public String test(){
         return "hello world";
-    }
-
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public void addUSer(@RequestBody Register register){
-        //Boolean f = tUserService.createUser(register.getName(),register.getPwd(),register.getEmail(),register.getPhone());
-        String salt="qwertyuiop123456789";
-        Boolean f = tUserService.createUser(register.getName(),register.getPwd(),salt,register.getEmail(),register.getPhone());
-        System.out.println("用户："+register.getName()+(f?"成功！":"已经存在"));
     }
 
     @RequestMapping(value = "/role",method = RequestMethod.POST)

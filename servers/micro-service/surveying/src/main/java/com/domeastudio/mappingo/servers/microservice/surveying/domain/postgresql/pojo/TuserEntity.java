@@ -15,7 +15,7 @@ public class TuserEntity {
     private String email;
     private String phone;
     private String salt;
-    private String token;
+    private String clientId;
     private Set<RuserresourceEntity> ruserresourcesByUid;
     private Set<RuserroleEntity> ruserrolesByUid;
     private TuserinfoEntity tuserinfoByUiid;
@@ -74,7 +74,7 @@ public class TuserEntity {
         if (pwd != null ? !pwd.equals(that.pwd) : that.pwd != null) return false;
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
         if (tuserinfoByUiid != null ? !tuserinfoByUiid.equals(that.tuserinfoByUiid) : that.tuserinfoByUiid != null) return false;
-        if (token != null ? !token.equals(that.token) : that.token != null) return false;
+        if (clientId != null ? !clientId.equals(that.clientId) : that.clientId != null) return false;
         if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
         if (salt != null ? !salt.equals(that.salt) : that.salt != null) return false;
 
@@ -88,7 +88,7 @@ public class TuserEntity {
         result = 31 * result + (pwd != null ? pwd.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (tuserinfoByUiid != null ? tuserinfoByUiid.hashCode() : 0);
-        result = 31 * result + (token != null ? token.hashCode() : 0);
+        result = 31 * result + (clientId != null ? clientId.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (salt != null ? salt.hashCode() : 0);
         return result;
@@ -123,16 +123,6 @@ public class TuserEntity {
     }
 
     @Basic
-    @Column(name = "token")
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    @Basic
     @Column(name = "phone",length = 11)
     public String getPhone() {
         return phone;
@@ -150,5 +140,15 @@ public class TuserEntity {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    @Basic
+    @Column(name = "clientId")
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 }

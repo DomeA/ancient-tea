@@ -1,5 +1,6 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo;
 
+import com.mongodb.gridfs.GridFS;
 import com.mongodb.util.JSON;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -9,6 +10,8 @@ import javax.persistence.*;
 public class MUsersEntity {
     @Id
     private String id;
+
+    private GridFS file;
 
     private String name;
 

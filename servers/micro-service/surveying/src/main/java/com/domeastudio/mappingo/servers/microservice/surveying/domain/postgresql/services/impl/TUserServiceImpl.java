@@ -3,11 +3,13 @@ package com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresq
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.*;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.repository.*;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TUserServiceImpl implements TUserService {
@@ -28,10 +30,18 @@ public class TUserServiceImpl implements TUserService {
     @Override
     public TuserEntity login(String param, String pwd) {
         TuserEntity tuserEntity=null;
-        tuserEntity=tUserRepository.findByNameAndPwd(param,pwd);
-        tuserEntity=tUserRepository.findByEmailAndPwd(param,pwd);
-        tuserEntity=tUserRepository.findByPhoneAndPwd(param,pwd);
-        return tuserEntity;
+
+        tuserEntity = findByNameOrEmailOrPhone(param);
+        if(tuserEntity==null){
+            return null;
+        }else {
+            String md5Password = MD5Utils.getMD5(pwd+tuserEntity.getSalt());
+            if (md5Password.compareTo(tuserEntity.getPwd()) != 0)
+            {
+                return null;
+            }
+            return tuserEntity;
+        }
     }
 
     @Override
@@ -82,9 +92,16 @@ public class TUserServiceImpl implements TUserService {
     @Override
     public TuserEntity findByNameOrEmailOrPhone(String param) {
         TuserEntity tuserEntity=null;
-        tuserEntity = tUserRepository.findByPhone(param);
-        tuserEntity=tUserRepository.findByEmail(param);
-        tuserEntity=tUserRepository.findByName(param);
+        tuserEntity = tUserRepository.findByName(param);
+        if(tuserEntity==null){
+            tuserEntity = tUserRepository.findByPhone(param);
+            if(tuserEntity==null){
+                tuserEntity = tUserRepository.findByEmail(param);
+                if(tuserEntity==null){
+                    return null;
+                }
+            }
+        }
         return tuserEntity;
     }
 
@@ -93,7 +110,6 @@ public class TUserServiceImpl implements TUserService {
         List<String> names=new ArrayList<>();
         List<RuserroleEntity> ruserroleEntities = rUserRoleRepository.findByTuserByUid(entity);
         for (RuserroleEntity rr: ruserroleEntities) {
-            //tRoleRepository.findOne(rr.getTroleByRid().getRid()).getName();
             String name=rr.getTroleByRid().getName();
             names.add(name);
         }
@@ -101,18 +117,21 @@ public class TUserServiceImpl implements TUserService {
     }
 
     @Override
-    public Boolean createUser(String name, String pwd,String salt,String email, String phone) {
+    public Boolean createUser(String name, String pwd,String email, String phone) {
         if(tUserRepository.findByName(name)!=null||
                 tUserRepository.findByEmail(email)!=null||
                 tUserRepository.findByPhone(phone)!=null){
             return false;
         }
+        String salt= UUID.randomUUID().toString().replace("-","");
         TuserEntity tuserEntity=new TuserEntity();
         tuserEntity.setEmail(email);
         tuserEntity.setName(name);
-        tuserEntity.setPwd(pwd);
+        tuserEntity.setPwd(MD5Utils.getMD5(pwd+salt));
         tuserEntity.setPhone(phone);
         tuserEntity.setSalt(salt);
+        String clientId=UUID.randomUUID().toString().replace("-","");
+        tuserEntity.setClientId(clientId);
         save(tuserEntity);
         return true;
     }

@@ -7,9 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TUserRepository extends JpaRepository<TuserEntity,String> {
     TuserEntity findByPhone(String phone);
-    TuserEntity findByNameAndPwd(String name,String pwd);
-    TuserEntity findByEmailAndPwd(String email,String pwd);
-    TuserEntity findByPhoneAndPwd(String phone,String pwd);
     TuserEntity findByName(String name);
     TuserEntity findByEmail(String email);
 }

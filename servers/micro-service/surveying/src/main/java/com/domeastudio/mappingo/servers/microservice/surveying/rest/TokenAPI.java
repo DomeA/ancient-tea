@@ -2,13 +2,13 @@ package com.domeastudio.mappingo.servers.microservice.surveying.rest;
 
 import com.domeastudio.mappingo.servers.microservice.surveying.config.Audience;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.request.Login;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.request.Register;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.AccessToken;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultMsg;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ClientMessage;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultStatusCode;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.JwtUtil;
-import com.domeastudio.mappingo.servers.microservice.surveying.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,24 +28,26 @@ public class TokenAPI {
     private Audience audienceEntity;
 
     @RequestMapping(value = "/token",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Object getAccessToken(@RequestBody Login loginPara)
-    {
-        ResultMsg resultMsg;
+    public ClientMessage getAccessToken(@RequestBody Login loginPara) {
+        ClientMessage clientMessage;
         try
         {
-            if(loginPara.getClientId() == null
-                    || (loginPara.getClientId().compareTo(audienceEntity.getClientId()) != 0))
-            {
-                resultMsg = new ResultMsg(ResultStatusCode.INVALID_CLIENTID.getErrcode(),
-                        ResultStatusCode.INVALID_CLIENTID.getErrmsg(), null);
-                return resultMsg;
-            }
-
             //验证码校验在后面章节添加
-
-
             //验证用户名密码
-            TuserEntity user = tUserService.findUserByName(loginPara.getUserName());
+            TuserEntity user = tUserService.login(loginPara.getUserName(),loginPara.getPassword());
+            if (user == null)
+            {
+                clientMessage = new ClientMessage(ResultStatusCode.INVALID_USERNAME_OR_PASSWORD.getCode(),
+                        ResultStatusCode.INVALID_USERNAME_OR_PASSWORD.getMsg(), null);
+                return clientMessage;
+            }
+            if(loginPara.getClientId() == null
+                    || (loginPara.getClientId().compareTo(user.getClientId()) != 0))
+            {
+                clientMessage = new ClientMessage(ResultStatusCode.INVALID_CLIENTID.getCode(),
+                        ResultStatusCode.INVALID_CLIENTID.getMsg(), null);
+                return clientMessage;
+            }
             List<String> roleByName=tUserService.findRoleByName(user);
             StringBuilder stringBuilder=new StringBuilder();
             if(roleByName.size()>0){
@@ -53,44 +55,40 @@ public class TokenAPI {
                     stringBuilder.append(role);
                 }
             }
-            if (user == null)
-            {
-                resultMsg = new ResultMsg(ResultStatusCode.INVALID_PASSWORD.getErrcode(),
-                        ResultStatusCode.INVALID_PASSWORD.getErrmsg(), null);
-                return resultMsg;
-            }
-            else
-            {
-                String md5Password = MD5Utils.getMD5(loginPara.getPassword()+user.getSalt());
-
-                if (md5Password.compareTo(user.getPwd()) != 0)
-                {
-                    resultMsg = new ResultMsg(ResultStatusCode.INVALID_PASSWORD.getErrcode(),
-                            ResultStatusCode.INVALID_PASSWORD.getErrmsg(), null);
-                    return resultMsg;
-                }
-            }
-
             //拼装accessToken
             String accessToken = JwtUtil.createJWT(loginPara.getUserName(), user.getUid(),
-                    stringBuilder.toString(), audienceEntity.getClientId(), audienceEntity.getName(),
-                    audienceEntity.getExpiresSecond() * 1000, audienceEntity.getClientId());
+                    stringBuilder.toString(), user.getClientId(), audienceEntity.getName(),
+                    audienceEntity.getExpiresSecond() * 1000, user.getClientId());
 
             //返回accessToken
             AccessToken accessTokenEntity = new AccessToken();
             accessTokenEntity.setAccess_token(accessToken);
             accessTokenEntity.setExpires_in(audienceEntity.getExpiresSecond());
             accessTokenEntity.setToken_type("bearer");
-            resultMsg = new ResultMsg(ResultStatusCode.OK.getErrcode(),
-                    ResultStatusCode.OK.getErrmsg(), accessTokenEntity);
-            return resultMsg;
+            clientMessage = new ClientMessage(ResultStatusCode.OK.getCode(),
+                    ResultStatusCode.OK.getMsg(), accessTokenEntity);
+            return clientMessage;
 
         }
         catch(Exception ex)
         {
-            resultMsg = new ResultMsg(ResultStatusCode.SYSTEM_ERR.getErrcode(),
-                    ResultStatusCode.SYSTEM_ERR.getErrmsg(), null);
-            return resultMsg;
+            clientMessage = new ClientMessage(ResultStatusCode.SYSTEM_ERR.getCode(),
+                    ResultStatusCode.SYSTEM_ERR.getMsg(), null);
+            return clientMessage;
         }
+    }
+
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    public ClientMessage addUSer(@RequestBody Register register){
+        ClientMessage clientMessage;
+        Boolean f = tUserService.createUser(register.getName(),register.getPwd(),register.getEmail(),register.getPhone());
+        System.out.println("用户："+register.getName()+(f?"成功！":"已经存在"));
+        if(f){
+            TuserEntity tuserEntity=tUserService.findUserByName(register.getName());
+            clientMessage=new ClientMessage(ResultStatusCode.OK.getCode(),ResultStatusCode.OK.getMsg(),tuserEntity.getClientId());
+        }else{
+            clientMessage=new ClientMessage(ResultStatusCode.INVALID_USERNAME.getCode(),ResultStatusCode.INVALID_USERNAME.getMsg(),"用户名已经存在");
+        }
+        return clientMessage;
     }
 }

@@ -1,9 +1,15 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.filter;
 
 import com.domeastudio.mappingo.servers.microservice.surveying.config.Audience;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultMsg;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ClientMessage;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultStatusCode;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.JsonStringUtil;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.JwtUtil;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.security.BASE64Helper;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.security.MD5SHAHelper;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.security.base.Byte2StringHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -12,12 +18,12 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 
 public class JWTAuthenticationFilter implements Filter {
-
     @Autowired
-    private Audience audienceEntity;
+    private TUserService tUserService;
 
 
     @Override
@@ -28,9 +34,10 @@ public class JWTAuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        ResultMsg resultMsg;
+        ClientMessage clientMessage;
         HttpServletRequest httpRequest = (HttpServletRequest)servletRequest;
         String auth = httpRequest.getHeader("Authorization");
+        TuserEntity tuserEntity=null;
         if ((auth != null) && (auth.length() > 7))
         {
             String HeadStr = auth.substring(0, 6).toLowerCase();
@@ -38,10 +45,18 @@ public class JWTAuthenticationFilter implements Filter {
             {
 
                 auth = auth.substring(7, auth.length());
-                if (JwtUtil.parseJWT(auth, audienceEntity.getClientId()) != null)
-                {
-                    filterChain.doFilter(servletRequest, servletResponse);
-                    return;
+                String[] authArry=auth.split("\\.");
+                try {
+                    String str = new String(BASE64Helper.decryptBASE64(authArry[1]));
+                    Map<String,String> user= JsonStringUtil.toMap(str);
+                    tuserEntity= tUserService.findUserOne(user.get("userid"));
+
+                    if (tuserEntity!=null&&JwtUtil.parseJWT(auth, tuserEntity.getClientId()) != null) {
+                        filterChain.doFilter(servletRequest, servletResponse);
+                        return;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -53,8 +68,8 @@ public class JWTAuthenticationFilter implements Filter {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        resultMsg = new ResultMsg(ResultStatusCode.INVALID_TOKEN.getErrcode(), ResultStatusCode.INVALID_TOKEN.getErrmsg(), null);
-        httpResponse.getWriter().write(mapper.writeValueAsString(resultMsg));
+        clientMessage = new ClientMessage(ResultStatusCode.INVALID_TOKEN.getCode(), ResultStatusCode.INVALID_TOKEN.getMsg(), null);
+        httpResponse.getWriter().write(mapper.writeValueAsString(clientMessage));
         return;
     }
 

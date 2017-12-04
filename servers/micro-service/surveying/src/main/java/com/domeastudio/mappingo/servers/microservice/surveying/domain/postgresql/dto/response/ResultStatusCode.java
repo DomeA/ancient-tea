@@ -1,33 +1,34 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response;
 
 public enum ResultStatusCode {
-    OK(0, "OK"),
+    OK(200, "OK"),
     SYSTEM_ERR(30001, "System error"),
     INVALID_CLIENTID(30003, "Invalid clientid"),
-    INVALID_PASSWORD(30004, "User name or password is incorrect"),
+    INVALID_USERNAME_OR_PASSWORD(30004, "User name or password is incorrect"),
     INVALID_CAPTCHA(30005, "Invalid captcha or captcha overdue"),
-    INVALID_TOKEN(30006, "Invalid token");
+    INVALID_TOKEN(30006, "Invalid token"),
+    INVALID_USERNAME(30007,"Invalid User name");
 
-    private int errcode;
-    private String errmsg;
-    public int getErrcode() {
-        return errcode;
+    private int code;
+    private String msg;
+    public int getCode() {
+        return code;
     }
 
-    public void setErrcode(int errcode) {
-        this.errcode = errcode;
+    public void setCode(int errcode) {
+        this.code = errcode;
     }
 
-    public String getErrmsg() {
-        return errmsg;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setErrmsg(String errmsg) {
-        this.errmsg = errmsg;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
-    private ResultStatusCode(int Errode, String ErrMsg)
+    ResultStatusCode(int code, String msg)
     {
-        this.errcode = Errode;
-        this.errmsg = ErrMsg;
+        this.code = code;
+        this.msg = msg;
     }
 }
