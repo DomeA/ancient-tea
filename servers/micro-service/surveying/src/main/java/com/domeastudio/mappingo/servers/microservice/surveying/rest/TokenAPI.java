@@ -42,7 +42,7 @@ public class TokenAPI {
                 return clientMessage;
             }
             if(loginPara.getClientId() == null
-                    || (loginPara.getClientId().compareTo(user.getClientId()) != 0))
+                    || (loginPara.getClientId().compareTo(user.getToken()) != 0))
             {
                 clientMessage = new ClientMessage(ResultStatusCode.INVALID_CLIENTID.getCode(),
                         ResultStatusCode.INVALID_CLIENTID.getMsg(), null);
@@ -57,8 +57,8 @@ public class TokenAPI {
             }
             //拼装accessToken
             String accessToken = JwtUtil.createJWT(loginPara.getUserName(), user.getUid(),
-                    stringBuilder.toString(), user.getClientId(), audienceEntity.getName(),
-                    audienceEntity.getExpiresSecond() * 1000, user.getClientId());
+                    stringBuilder.toString(), user.getToken(), audienceEntity.getName(),
+                    audienceEntity.getExpiresSecond() * 1000, user.getToken());
 
             //返回accessToken
             AccessToken accessTokenEntity = new AccessToken();
@@ -85,7 +85,7 @@ public class TokenAPI {
         System.out.println("用户："+register.getName()+(f?"成功！":"已经存在"));
         if(f){
             TuserEntity tuserEntity=tUserService.findUserByName(register.getName());
-            clientMessage=new ClientMessage(ResultStatusCode.OK.getCode(),ResultStatusCode.OK.getMsg(),tuserEntity.getClientId());
+            clientMessage=new ClientMessage(ResultStatusCode.OK.getCode(),ResultStatusCode.OK.getMsg(),tuserEntity.getToken());
         }else{
             clientMessage=new ClientMessage(ResultStatusCode.INVALID_USERNAME.getCode(),ResultStatusCode.INVALID_USERNAME.getMsg(),"用户名已经存在");
         }

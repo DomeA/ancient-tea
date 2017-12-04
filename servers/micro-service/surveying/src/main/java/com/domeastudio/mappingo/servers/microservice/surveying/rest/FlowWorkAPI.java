@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/flowable")
+@RequestMapping("/manager/flowable")
 public class FlowWorkAPI {
 
     @Autowired

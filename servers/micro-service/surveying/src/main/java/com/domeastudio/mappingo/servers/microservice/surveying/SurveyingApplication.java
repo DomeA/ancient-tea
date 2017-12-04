@@ -35,7 +35,7 @@ public class SurveyingApplication {
 
             if(uf){
                 System.out.println("管理员账户：system 创建成功");
-                System.out.println("管理员账户clientId："+tuserEntity.getClientId());
+                System.out.println("管理员账户clientId："+tuserEntity.getToken());
             }else{
                 System.out.println("管理员账户：system 已经存在");
             }

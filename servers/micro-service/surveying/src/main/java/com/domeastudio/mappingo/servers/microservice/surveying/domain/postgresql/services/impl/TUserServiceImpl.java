@@ -133,8 +133,8 @@ public class TUserServiceImpl implements TUserService {
         tuserEntity.setPwd(pwdstr);
         tuserEntity.setPhone(phone);
         tuserEntity.setSalt(salt);
-        String clientId=UUID.randomUUID().toString().replace("-","");
-        tuserEntity.setClientId(clientId);
+        String token=UUID.randomUUID().toString().replace("-","");
+        tuserEntity.setToken(token);
         save(tuserEntity);
         return true;
     }

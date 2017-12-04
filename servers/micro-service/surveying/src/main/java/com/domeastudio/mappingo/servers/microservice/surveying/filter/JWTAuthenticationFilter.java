@@ -51,7 +51,7 @@ public class JWTAuthenticationFilter implements Filter {
                     Map<String,String> user= JsonStringUtil.toMap(str);
                     tuserEntity= tUserService.findUserOne(user.get("userid"));
 
-                    if (tuserEntity!=null&&JwtUtil.parseJWT(auth, tuserEntity.getClientId()) != null) {
+                    if (tuserEntity!=null&&JwtUtil.parseJWT(auth, tuserEntity.getToken()) != null) {
                         filterChain.doFilter(servletRequest, servletResponse);
                         return;
                     }
