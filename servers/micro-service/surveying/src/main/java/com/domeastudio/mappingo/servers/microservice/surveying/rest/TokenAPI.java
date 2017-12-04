@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -46,6 +47,12 @@ public class TokenAPI {
             {
                 clientMessage = new ClientMessage(ResultStatusCode.INVALID_CLIENTID.getCode(),
                         ResultStatusCode.INVALID_CLIENTID.getMsg(), null);
+                return clientMessage;
+            }
+            Integer sub=(new Date())-user.getRegistTime();
+            if(sub>user.getAuthorTime()){
+                clientMessage = new ClientMessage(ResultStatusCode.INVALID_TIME.getCode(),
+                        ResultStatusCode.INVALID_TIME.getMsg(), null);
                 return clientMessage;
             }
             List<String> roleByName=tUserService.findRoleByName(user);

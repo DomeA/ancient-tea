@@ -7,6 +7,7 @@ public enum ResultStatusCode {
     INVALID_USERNAME_OR_PASSWORD(30004, "User name or password is incorrect"),
     INVALID_CAPTCHA(30005, "Invalid captcha or captcha overdue"),
     INVALID_TOKEN(30006, "Invalid token"),
+    INVALID_TIME(30008,"Invalid time limit"),
     INVALID_USERNAME(30007,"Invalid User name");
 
     private int code;

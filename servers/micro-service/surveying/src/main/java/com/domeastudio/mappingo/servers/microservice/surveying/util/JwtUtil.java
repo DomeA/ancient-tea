@@ -39,7 +39,7 @@ public class JwtUtil {
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
         //添加构成JWT的参数
-        JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
+        JwtBuilder builder = Jwts.builder().setHeaderParam("type", "JWT")
                 .claim("role", role)
                 .claim("unique_name", name)
                 .claim("userid", userId)

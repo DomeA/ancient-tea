@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -119,7 +120,7 @@ public class TUserServiceImpl implements TUserService {
     }
 
     @Override
-    public Boolean createUser(String name, String pwd,String email, String phone) {
+    public Boolean createUser(String name, String pwd,String email, String phone,Integer term) {
         if(tUserRepository.findByName(name)!=null||
                 tUserRepository.findByEmail(email)!=null||
                 tUserRepository.findByPhone(phone)!=null){
@@ -133,6 +134,8 @@ public class TUserServiceImpl implements TUserService {
         tuserEntity.setPwd(pwdstr);
         tuserEntity.setPhone(phone);
         tuserEntity.setSalt(salt);
+        tuserEntity.setRegistTime(String.valueOf(new Date()));
+        tuserEntity.setAuthorTime(term);
         String token=UUID.randomUUID().toString().replace("-","");
         tuserEntity.setToken(token);
         save(tuserEntity);

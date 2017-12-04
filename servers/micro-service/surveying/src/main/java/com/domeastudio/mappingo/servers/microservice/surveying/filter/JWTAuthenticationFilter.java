@@ -18,6 +18,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -50,8 +51,8 @@ public class JWTAuthenticationFilter implements Filter {
                     String str = new String(BASE64Helper.decryptBASE64(authArry[1]));
                     Map<String,String> user= JsonStringUtil.toMap(str);
                     tuserEntity= tUserService.findUserOne(user.get("userid"));
-
-                    if (tuserEntity!=null&&JwtUtil.parseJWT(auth, tuserEntity.getToken()) != null) {
+                    Integer sub=(new Date())-tuserEntity.getRegistTime();
+                    if(sub<=tuserEntity.getAuthorTime()&&tuserEntity!=null&&JwtUtil.parseJWT(auth, tuserEntity.getToken()) != null){
                         filterChain.doFilter(servletRequest, servletResponse);
                         return;
                     }
