@@ -1,0 +1,24 @@
+1、spring boot 主体框架
+2、hibernate jpa持久化框架
+3、集成postgresql+postgis+mysql+mongodb
+4、集成flowable工作流成
+5、集成基于jwt的REST安全认证过滤器
+6、缺失mongodb数据库安全登陆配置
+7、缺失文件上传REST接口
+8、缺失Netcdf文件的读取生成
+9、缺失报表生成和下载
+10、集成geotools空间计算
+11、缺失rabbitmq消息通讯服务
+12、缺失websocket服务接口
+13、集成自定义用户模型
+14、缺失flowable用户模型与自定义用户模型集成
+15、修改自定义用户模型，适应消息通信
+16、缺失图像处理服务
+17、缺失matlab模型处理服务
+18、缺失spring cloud云框架
+19、缺失服务发现服务
+20、缺失服务监控服务
+21、缺失客户端应用程序
+22、缺失手机端应用程序
+23、缺失领域模型设计
+24、缺失flowable表单设计器 
