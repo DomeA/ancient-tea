@@ -8,6 +8,7 @@ import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultStatusCode;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.DateUtil;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -49,7 +50,7 @@ public class TokenAPI {
                         ResultStatusCode.INVALID_CLIENTID.getMsg(), null);
                 return clientMessage;
             }
-            Integer sub=(new Date())-user.getRegistTime();
+            Integer sub= DateUtil.getDateSpace(String.valueOf(new Date()),user.getRegistTime());
             if(sub>user.getAuthorTime()){
                 clientMessage = new ClientMessage(ResultStatusCode.INVALID_TIME.getCode(),
                         ResultStatusCode.INVALID_TIME.getMsg(), null);

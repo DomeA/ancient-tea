@@ -3,7 +3,7 @@ package com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresq
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.*;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.repository.*;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
-import com.domeastudio.mappingo.servers.microservice.surveying.util.MD5Utils;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.DateUtil;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.security.MD5SHAHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -134,7 +134,8 @@ public class TUserServiceImpl implements TUserService {
         tuserEntity.setPwd(pwdstr);
         tuserEntity.setPhone(phone);
         tuserEntity.setSalt(salt);
-        tuserEntity.setRegistTime(String.valueOf(new Date()));
+        String rtime= DateUtil.dateToString("yyyy-MM-dd",new Date(), "MEDIUM");
+        tuserEntity.setRegistTime(rtime);
         tuserEntity.setAuthorTime(term);
         String token=UUID.randomUUID().toString().replace("-","");
         tuserEntity.setToken(token);

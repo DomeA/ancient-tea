@@ -3,12 +3,9 @@ package com.domeastudio.mappingo.servers.microservice.surveying;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TroleEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
-import com.domeastudio.mappingo.servers.microservice.surveying.util.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.UUID;
 
 @SpringBootApplication
 public class SurveyingApplication {
@@ -49,9 +46,9 @@ public class SurveyingApplication {
             }else{
                 System.out.println("系统管理员角色：ROLE_SIGHTSEER 已经存在");
             }if(urf){
-                System.out.println("管理员账户：[system] 被赋予 系统管理员角色：[ROLE_SIGHTSEER] 成功");
+                System.out.println("管理员账户：[system] 被赋予 系统管理员角色：[ROLE_SYSADMIN] 成功");
             }else{
-                System.out.println("管理员账户：[system] 被赋予 系统管理员角色：[ROLE_SIGHTSEER] 已经存在");
+                System.out.println("管理员账户：[system] 被赋予 系统管理员角色：[ROLE_SYSADMIN] 已经存在");
             }
         } catch (Exception e) {
             e.printStackTrace();

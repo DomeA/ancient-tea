@@ -5,6 +5,7 @@ import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultStatusCode;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.DateUtil;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.JsonStringUtil;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.JwtUtil;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.security.BASE64Helper;
@@ -51,7 +52,7 @@ public class JWTAuthenticationFilter implements Filter {
                     String str = new String(BASE64Helper.decryptBASE64(authArry[1]));
                     Map<String,String> user= JsonStringUtil.toMap(str);
                     tuserEntity= tUserService.findUserOne(user.get("userid"));
-                    Integer sub=(new Date())-tuserEntity.getRegistTime();
+                    Integer sub= DateUtil.getDateSpace(String.valueOf(new Date()),tuserEntity.getRegistTime());
                     if(sub<=tuserEntity.getAuthorTime()&&tuserEntity!=null&&JwtUtil.parseJWT(auth, tuserEntity.getToken()) != null){
                         filterChain.doFilter(servletRequest, servletResponse);
                         return;
