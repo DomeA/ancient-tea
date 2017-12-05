@@ -53,8 +53,8 @@ spring:
       host: localhost
       port: 27017
       database: test
-      username:
-      password:
+      username: root
+      password: root
 server:
   port: 8050
 flowable:
