@@ -31,7 +31,10 @@ public class FlowWorkAPI {
         ClientMessage clientMessage;
         Deployment deployment;
         //todo:修改定义参数
-        deployment=workFlow.deploymentProcessDefinition(processDef.getName(),"",processDef.getFileType());
+        deployment=workFlow.deploymentProcessDefinition(
+                processDef.getName(),null,
+                null,null,
+                null,null,"",processDef.getFileType());
         if(deployment==null){
             clientMessage=new ClientMessage(ResultStatusCode.FAILURE_PROCESS_DEFINITION.getCode(),
                     ResultStatusCode.FAILURE_PROCESS_DEFINITION.getMsg(),null);

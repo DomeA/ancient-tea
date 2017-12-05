@@ -13,7 +13,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     MUsersRepository mUsersRepository;
     @Override
-    @Transactional(rollbackFor = {IllegalArgumentException.class})
     public void saveUser() {
         MUsersEntity m=new MUsersEntity();
 

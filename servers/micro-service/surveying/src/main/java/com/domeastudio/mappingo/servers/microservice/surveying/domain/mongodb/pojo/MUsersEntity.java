@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 
-@Document(collection="order_info")
+@Document(collection="sys_workflow_info")
 public class MUsersEntity {
     @Id
     private String id;
@@ -14,6 +14,8 @@ public class MUsersEntity {
     private GridFS file;
 
     private String name;
+
+    private String type;
 
     public String getId() {
         return id;
@@ -34,5 +36,13 @@ public class MUsersEntity {
     @Override
     public String toString() {
         return JSON.serialize(this);
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
