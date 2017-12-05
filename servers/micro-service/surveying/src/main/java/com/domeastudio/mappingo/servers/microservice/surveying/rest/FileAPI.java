@@ -12,6 +12,7 @@ import java.io.*;
 import java.util.List;
 import java.util.UUID;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/manager/file")
 public class FileAPI {

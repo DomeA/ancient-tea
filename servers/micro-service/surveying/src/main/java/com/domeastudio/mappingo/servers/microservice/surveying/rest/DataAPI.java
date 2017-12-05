@@ -1,5 +1,5 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.rest;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services.UserService;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services.FileService;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +16,7 @@ public class DataAPI {
     TUserService tUserService;
 
     @Autowired
-    UserService userService;
+    FileService userService;
 
     @ApiOperation(value = "用于测试服务是否正常", notes = "", httpMethod = "GET")
     @ApiResponse(code = 200, message = "String", response = String.class)

@@ -16,8 +16,9 @@ public class BpmnFileEntity {
     private Long size;
     private Date uploadDate;
     private String md5;
-    private Byte[] content; // 文件内容
+    private byte[] content; // 文件内容
     private String path; // 文件路径
+
 
     public String getId() {
         return id;
@@ -74,11 +75,11 @@ public class BpmnFileEntity {
         return JSON.serialize(this);
     }
 
-    public Byte[] getContent() {
+    public byte[] getContent() {
         return content;
     }
 
-    public void setContent(Byte[] content) {
+    public void setContent(byte[] content) {
         this.content = content;
     }
 

@@ -14,7 +14,9 @@ public enum ResultStatusCode {
     NONE_PROCESSES(40003,"There is no process"),
     NONE_TASK(40004,"There is no task"),
     NONE_HISTORY_TASK(40005,"There is no history task"),
-    NONE_GROUP_TASK(40006,"There is no group task");
+    NONE_GROUP_TASK(40006,"There is no group task"),
+    NONE_FILE(50001,"There is no files"),
+    INVALID_FILE(50002,"Invalid file");
 
     private int code;
     private String msg;
