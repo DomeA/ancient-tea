@@ -20,7 +20,9 @@
         <module>servers/micro-service/mongodb</module>
         <module>component/sde</module>
         <module>website/manager</module>
+        <module>website/portal</module>
         <module>servers/micro-service/surveying</module>
+        <module>servers/micro-service/mappingo-mq</module>
     </modules>
 
     <dependencyManagement>
