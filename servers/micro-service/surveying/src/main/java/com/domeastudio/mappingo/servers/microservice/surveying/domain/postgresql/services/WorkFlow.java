@@ -1,6 +1,7 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services;
 
 import com.domeastudio.mappingo.servers.microservice.surveying.dto.request.ProcessDefType;
+import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -8,9 +9,10 @@ import org.flowable.task.api.Task;
 import org.flowable.task.api.history.HistoricTaskInstance;
 
 import java.util.List;
+import java.util.zip.ZipInputStream;
 
 public interface WorkFlow {
-    Deployment deploymentProcessDefinition(String name, String path, ProcessDefType processDefType);
+    Deployment deploymentProcessDefinition(String name, String resourceName, ZipInputStream zipInputStream, byte[] bytes, String text, BpmnModel bpmnModel, String path, ProcessDefType processDefType);
     ProcessInstance startProcessInstanceById(String id);
     ProcessInstance startProcessInstanceByKey(String key);
     List<ProcessDefinition> findAllProcessDefinition();

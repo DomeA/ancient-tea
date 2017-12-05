@@ -2,6 +2,7 @@ package com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresq
 
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.WorkFlow;
 import com.domeastudio.mappingo.servers.microservice.surveying.dto.request.ProcessDefType;
+import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
@@ -14,6 +15,7 @@ import org.flowable.task.api.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.zip.ZipInputStream;
 
 @Service
 public class WorkFlowImpl implements WorkFlow {
@@ -30,7 +32,7 @@ public class WorkFlowImpl implements WorkFlow {
     private HistoryService historyService;
 
     @Override
-    public Deployment deploymentProcessDefinition(String name, String path, ProcessDefType processDefType) {
+    public Deployment deploymentProcessDefinition(String name, String resourceName, ZipInputStream zipInputStream, byte[] bytes, String text, BpmnModel bpmnModel,String path, ProcessDefType processDefType) {
         Deployment deployment=null;
         //创建核心引擎对象
         switch (processDefType){
@@ -38,35 +40,35 @@ public class WorkFlowImpl implements WorkFlow {
                 deployment=repositoryService
                         .createDeployment()
                         .name(name)
-                        .addZipInputStream()
+                        .addZipInputStream(zipInputStream)
                         .deploy();
                 break;
             case BYTE:
                 deployment=repositoryService
                         .createDeployment()
                         .name(name)
-                        .addBytes()
+                        .addBytes(resourceName,bytes)
                         .deploy();
                 break;
             case PATH:
                 deployment=repositoryService
                         .createDeployment()
                         .name(name)
-                        .addClasspathResource()
+                        .addClasspathResource(path)
                         .deploy();
                 break;
             case STRING:
                 deployment=repositoryService
                         .createDeployment()
                         .name(name)
-                        .addString()
+                        .addString(resourceName,text)
                         .deploy();
                 break;
             case BPMNMODEL:
                 deployment=repositoryService
                         .createDeployment()
                         .name(name)
-                        .addBpmnModel()
+                        .addBpmnModel(resourceName,bpmnModel)
                         .deploy();
                 break;
         }
