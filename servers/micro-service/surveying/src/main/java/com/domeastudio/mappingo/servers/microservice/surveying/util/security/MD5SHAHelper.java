@@ -4,7 +4,10 @@ import com.domeastudio.mappingo.servers.microservice.surveying.util.security.bas
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by domea on 16-4-2.
@@ -48,6 +51,16 @@ public class MD5SHAHelper {
             return null;
         }
         return encryptCore(ALGORITHM.MD5, data);
+    }
+
+    public static byte[] encryptByMD5(InputStream inputStream) throws NoSuchAlgorithmException, IOException {
+        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        byte[] dataBytes = new byte[1024];
+        int nread = 0;
+        while ((nread = inputStream.read(dataBytes)) != -1) {
+            messageDigest.update(dataBytes, 0, nread);
+        }
+        return messageDigest.digest();
     }
 
     /**
