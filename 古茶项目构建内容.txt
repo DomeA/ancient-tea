@@ -3,7 +3,7 @@
 3、集成postgresql+postgis+mysql+mongodb
 4、集成flowable工作流成
 5、集成基于jwt的REST安全认证过滤器
-6、缺失mongodb数据库安全登陆配置
+6、集成mongodb数据库安全登陆配置（初始化部署mongodb使用--auth参数启动，然后use admin/db.createUser({user:"root",pwd:"root",role:["root"]})/db.auth("root","root")/use mydatabase/db.createUser({user:"example",pwd:"example",roles:[role:"dbOwner",db:"mydatabase"]})）
 7、集成文件上传REST接口
 8、缺失Netcdf文件的读取生成
 9、缺失报表生成和下载
