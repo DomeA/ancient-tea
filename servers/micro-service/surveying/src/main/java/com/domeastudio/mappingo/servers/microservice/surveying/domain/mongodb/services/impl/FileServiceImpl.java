@@ -3,21 +3,39 @@ package com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.s
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.BpmnFileEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.repository.BpmnFileRepository;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services.FileService;
+import com.mongodb.DB;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.gridfs.GridFSBuckets;
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
+import com.mongodb.gridfs.GridFSInputFile;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
 public class FileServiceImpl implements FileService {
     @Autowired
     BpmnFileRepository bpmnFileRepository;
+    @Autowired
+    MongoOperations mongoOperations;
+
+    @Autowired
+    private MongoDbFactory mongodbfactory;
 
     @Override
     public BpmnFileEntity saveBpmnFile(BpmnFileEntity file) {
@@ -39,11 +57,58 @@ public class FileServiceImpl implements FileService {
         Page<BpmnFileEntity> page = null;
         List<BpmnFileEntity> list = null;
 
-        Sort sort = new Sort(Direction.DESC,"uploadDate");
+        Sort sort = new Sort(Direction.DESC, "uploadDate");
         Pageable pageable = new PageRequest(pageIndex, pageSize, sort);
 
         page = bpmnFileRepository.findAll(pageable);
         list = page.getContent();
         return list;
+    }
+
+    @Override
+    public void gridFSInput(String id,Class cla, File file) {
+        DB db = mongoOperations.getCollection(
+                mongoOperations.getCollectionName(cla)).getDB();
+        //db.requestStart();
+        GridFSInputFile gfsInput;
+        try {
+            gfsInput = new GridFS(db, "fs")
+                    .createFile(file);
+            gfsInput.setId(id);
+            gfsInput.setFilename(UUID.randomUUID().toString().replace("-",""));// 保存到数据库的文件名为qq123456789logo
+            gfsInput.save();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+      //  db.requestDone();
+    }
+
+    @Override
+    public void gridFSOutput(ObjectId id,Class cla, OutputStream outputFilepath) {
+        DB db = mongoOperations.getCollection(
+                mongoOperations.getCollectionName(cla)).getDB();
+
+        GridFSDBFile gfsFile = new GridFS(db, "fs").findOne(id);// 查找文件名qq123456789logo输出保存
+        try {
+            gfsFile.writeTo(outputFilepath);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void gridFSOutput(String name,Class cla, OutputStream outputFilepath) {
+        DB db = mongoOperations.getCollection(
+                mongoOperations.getCollectionName(cla)).getDB();
+
+        GridFSDBFile gfsFile = new GridFS(db, "fs").findOne(name);// 查找文件名qq123456789logo输出保存
+        try {
+            gfsFile.writeTo(outputFilepath);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

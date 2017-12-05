@@ -1,7 +1,10 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services;
 
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.BpmnFileEntity;
+import org.bson.types.ObjectId;
 
+import java.io.File;
+import java.io.OutputStream;
 import java.util.List;
 
 public interface FileService {
@@ -32,4 +35,8 @@ public interface FileService {
      * @return
      */
     List<BpmnFileEntity> listFilesByPage(int pageIndex, int pageSize);
+
+    void gridFSInput(String id,Class cla, File file);
+    void gridFSOutput(ObjectId id,Class cla, OutputStream outputFilepath);
+    void gridFSOutput(String name,Class cla, OutputStream outputFilepath);
 }
