@@ -52,9 +52,9 @@ spring:
     mongodb:
       host: localhost
       port: 27017
-      database: test
-      username: root
-      password: root
+      database: mappingosys
+      username: mappingo
+      password: mappingo
 server:
   port: 8050
 flowable:
