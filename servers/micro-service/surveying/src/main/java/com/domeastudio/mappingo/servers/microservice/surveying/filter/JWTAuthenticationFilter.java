@@ -1,16 +1,13 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.filter;
 
-import com.domeastudio.mappingo.servers.microservice.surveying.config.Audience;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ClientMessage;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultStatusCode;
+import com.domeastudio.mappingo.servers.microservice.surveying.dto.response.ClientMessage;
+import com.domeastudio.mappingo.servers.microservice.surveying.dto.response.ResultStatusCode;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.DateUtil;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.JsonStringUtil;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.JwtUtil;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.security.BASE64Helper;
-import com.domeastudio.mappingo.servers.microservice.surveying.util.security.MD5SHAHelper;
-import com.domeastudio.mappingo.servers.microservice.surveying.util.security.base.Byte2StringHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;

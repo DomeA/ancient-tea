@@ -1,11 +1,11 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.rest;
 
 import com.domeastudio.mappingo.servers.microservice.surveying.config.Audience;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.request.Login;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.request.Register;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.AccessToken;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ClientMessage;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response.ResultStatusCode;
+import com.domeastudio.mappingo.servers.microservice.surveying.dto.request.Login;
+import com.domeastudio.mappingo.servers.microservice.surveying.dto.request.Register;
+import com.domeastudio.mappingo.servers.microservice.surveying.dto.response.AccessToken;
+import com.domeastudio.mappingo.servers.microservice.surveying.dto.response.ClientMessage;
+import com.domeastudio.mappingo.servers.microservice.surveying.dto.response.ResultStatusCode;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.pojo.TuserEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
 import com.domeastudio.mappingo.servers.microservice.surveying.util.DateUtil;

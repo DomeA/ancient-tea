@@ -1,4 +1,4 @@
-package com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.request;
+package com.domeastudio.mappingo.servers.microservice.surveying.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 

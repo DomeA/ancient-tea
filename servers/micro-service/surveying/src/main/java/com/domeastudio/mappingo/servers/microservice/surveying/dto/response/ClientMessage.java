@@ -1,4 +1,4 @@
-package com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.response;
+package com.domeastudio.mappingo.servers.microservice.surveying.dto.response;
 
 public class ClientMessage {
     private int code;

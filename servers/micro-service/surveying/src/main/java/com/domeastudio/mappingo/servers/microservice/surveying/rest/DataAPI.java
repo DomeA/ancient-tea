@@ -1,14 +1,11 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.rest;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services.UserService;
-import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.dto.request.Register;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.TUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @Api("测绘数据管理服务")
 @RestController
