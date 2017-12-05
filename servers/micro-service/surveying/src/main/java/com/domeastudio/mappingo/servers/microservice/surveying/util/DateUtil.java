@@ -38,7 +38,7 @@ public class DateUtil {
 
         Calendar calst = Calendar.getInstance();;
         Calendar caled = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         calst.setTime(sdf.parse(early));
         caled.setTime(sdf.parse(late));
 
@@ -55,7 +55,7 @@ public class DateUtil {
         return days;
     }
 
-    public static int daysBetween(Date early, Date late) {
+    public static int getDateSpace(Date early, Date late) {
 
         Calendar calst = Calendar.getInstance();
         Calendar caled = Calendar.getInstance();
