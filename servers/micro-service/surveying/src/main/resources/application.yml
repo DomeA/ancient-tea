@@ -1,4 +1,9 @@
 spring:
+  http:
+    multipart:
+      enabled: true
+      max-request-size: 40960MB
+      max-file-size: 4096MB
   profiles:
     #选择使用下面哪个配置项
     active: devProfile
