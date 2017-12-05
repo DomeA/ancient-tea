@@ -52,7 +52,7 @@ public class JWTAuthenticationFilter implements Filter {
                     String str = new String(BASE64Helper.decryptBASE64(authArry[1]));
                     Map<String,String> user= JsonStringUtil.toMap(str);
                     tuserEntity= tUserService.findUserOne(user.get("userid"));
-                    Integer sub= DateUtil.getDateSpace(String.valueOf(new Date()),tuserEntity.getRegistTime());
+                    Integer sub= DateUtil.getDateSpace(DateUtil.dateToString("yyyy-MM-dd",new Date(),"MEDIUM"),tuserEntity.getRegistTime());
                     if(sub<=tuserEntity.getAuthorTime()&&tuserEntity!=null&&JwtUtil.parseJWT(auth, tuserEntity.getToken()) != null){
                         filterChain.doFilter(servletRequest, servletResponse);
                         return;
