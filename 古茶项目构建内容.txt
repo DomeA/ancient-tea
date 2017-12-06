@@ -23,3 +23,11 @@
 23、缺失领域模型设计
 24、缺失flowable表单设计器
 25、集成api开发文档
+26、缺失flowable工作流程设计器
+
+测试
+1、jwt令牌测试
+2、spring boot jpa 测试
+3、mongodb小文件上传测试
+4、缺失mongodb大文件上传测试
+5、缺失flowable工作服务测试
