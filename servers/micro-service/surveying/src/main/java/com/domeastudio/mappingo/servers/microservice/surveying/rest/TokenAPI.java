@@ -50,7 +50,7 @@ public class TokenAPI {
                         ResultStatusCode.INVALID_CLIENTID.getMsg(), null);
                 return clientMessage;
             }
-            Integer sub= DateUtil.getDateSpace(DateUtil.dateToString("yyyy-MM-dd",new Date(),"MEDIUM"),user.getRegistTime());
+            Integer sub= DateUtil.getDateSpace(user.getRegistTime(),DateUtil.dateToString("yyyy-MM-dd",new Date(),"MEDIUM"));
             if(sub>user.getAuthorTime()){
                 clientMessage = new ClientMessage(ResultStatusCode.INVALID_TIME.getCode(),
                         ResultStatusCode.INVALID_TIME.getMsg(), null);
