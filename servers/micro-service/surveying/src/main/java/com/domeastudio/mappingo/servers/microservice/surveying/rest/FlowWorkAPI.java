@@ -1,9 +1,12 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.rest;
 
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.BpmnFileEntity;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services.FileService;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.postgresql.services.WorkFlow;
 import com.domeastudio.mappingo.servers.microservice.surveying.dto.request.ProcessDef;
 import com.domeastudio.mappingo.servers.microservice.surveying.dto.response.ClientMessage;
 import com.domeastudio.mappingo.servers.microservice.surveying.dto.response.ResultStatusCode;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.ByteAndInputStreamUtil;
 import io.swagger.annotations.Api;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
@@ -15,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.zip.ZipInputStream;
 
 @Api("工作流服务")
 @RestController
@@ -23,6 +27,8 @@ public class FlowWorkAPI {
 
     @Autowired
     private WorkFlow workFlow;
+    @Autowired
+    private FileService fileService;
 
     @RequestMapping(value = "/process/deployment",
             method = RequestMethod.POST,
@@ -30,11 +36,13 @@ public class FlowWorkAPI {
     public ClientMessage deploymentProcessDefinition(@RequestBody ProcessDef processDef) {
         ClientMessage clientMessage;
         Deployment deployment;
+        BpmnFileEntity bpmnFileEntity =fileService.getBpmnFileById(processDef.getFileId());
+        ZipInputStream zipIn = new ZipInputStream( ByteAndInputStreamUtil.byte2Input(bpmnFileEntity.getContent()));
         //todo:修改定义参数
         deployment = workFlow.deploymentProcessDefinition(
                 processDef.getName(), null,
-                null, null,
-                null, null, "", processDef.getFileType());
+                zipIn, null,
+                null, null, null, processDef.getFileType());
         if (deployment == null) {
             clientMessage = new ClientMessage(ResultStatusCode.FAILURE_PROCESS_DEFINITION.getCode(),
                     ResultStatusCode.FAILURE_PROCESS_DEFINITION.getMsg(), null);
