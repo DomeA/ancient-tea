@@ -13,6 +13,7 @@ public class FileEntity {
     private String contentType; // 文件类型
     private Long size;
     private Date uploadDate;
+    private String md5;
 
     public String getId() {
         return id;
@@ -52,5 +53,13 @@ public class FileEntity {
 
     public void setUploadDate(Date uploadDate) {
         this.uploadDate = uploadDate;
+    }
+
+    public String getMd5() {
+        return md5;
+    }
+
+    public void setMd5(String md5) {
+        this.md5 = md5;
     }
 }

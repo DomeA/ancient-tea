@@ -1,7 +1,17 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.rest;
 
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.FileEntity;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.ProjectEntity;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services.FileService;
+import com.domeastudio.mappingo.servers.microservice.surveying.dto.request.ProjectDef;
+import com.domeastudio.mappingo.servers.microservice.surveying.dto.response.ClientMessage;
+import com.domeastudio.mappingo.servers.microservice.surveying.dto.response.ResultStatusCode;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.DateUtil;
+import com.domeastudio.mappingo.servers.microservice.surveying.util.security.MD5SHAHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -9,6 +19,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,41 +30,65 @@ import java.util.UUID;
 public class FileAPI {
     private static final Logger logger = LoggerFactory.getLogger(FileAPI.class);
 
+    @Autowired
+    private FileService fileService;
     //文件上传相关代码
-    @RequestMapping(value = "upload")
-    public @ResponseBody
-    String upload(@RequestParam("test") MultipartFile file) {
-        if (file.isEmpty()) {
-            return "文件为空";
+    //@RequestBody要求客户端发过来的是json数据 form表单请求不需要
+    @PostMapping(value = "/upload")
+    public ClientMessage upload(ProjectDef projectDef, @RequestParam("file") MultipartFile[] multipartFiles) {
+        ClientMessage clientMessage;
+        if (multipartFiles.length<1){
+            clientMessage=new ClientMessage(ResultStatusCode.INVALID_FILES.getCode(),
+                    ResultStatusCode.INVALID_FILES.getMsg(),null);
+            return clientMessage;
         }
-        // 获取文件名
-        String fileName = file.getOriginalFilename();
-        logger.info("上传的文件名为：" + fileName);
-        // 获取文件的后缀名
-        String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        logger.info("上传的后缀名为：" + suffixName);
-        // 文件上传后的路径
-        String filePath = "E://test//";
-        // 解决中文问题，liunx下中文路径，图片显示问题
-        fileName = UUID.randomUUID() + suffixName;
-        File dest = new File(filePath + fileName);
-        // 检测是否存在目录
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdirs();
+        //BufferedOutputStream stream=null;
+        ProjectEntity projectEntity=new ProjectEntity();
+        projectEntity.setUploadTime(new Date());
+        projectEntity.setCreateTime(DateUtil.stringToDate(projectDef.getCreateTime()));
+        projectEntity.setName(projectDef.getName());
+        projectEntity.setProps(projectDef.getPros());
+        List<FileEntity> fileEntities=new ArrayList<>();
+        for (MultipartFile file:multipartFiles) {
+            if (!file.isEmpty()) {
+                try {
+                    FileEntity fileEntity=new FileEntity();
+                    fileEntity.setName(file.getOriginalFilename());
+                    fileEntity.setUploadDate(new Date());
+                    fileEntity.setSize(file.getSize());
+                    fileEntity.setContentType(file.getContentType());
+                    fileEntity.setMd5(MD5SHAHelper.toString(MD5SHAHelper.encryptByMD5(file.getInputStream())));
+                    FileEntity filetemp = fileService.saveFile(fileEntity);
+                    fileService.gridFSInput(filetemp.getId(),FileEntity.class,file.getInputStream());
+//                    byte[] bytes = file.getBytes();
+//                    stream = new BufferedOutputStream(new FileOutputStream(
+//                            new File(file.getOriginalFilename())));
+//                    stream.write(bytes);
+//                    stream.close();
+                    fileEntities.add(filetemp);
+
+                } catch (Exception e) {
+                    //stream = null;
+                    clientMessage=new ClientMessage(ResultStatusCode.SYSTEM_ERR.getCode(),
+                            ResultStatusCode.SYSTEM_ERR.getMsg(),null);
+                    return clientMessage;
+                }
+            } else {
+                clientMessage=new ClientMessage(ResultStatusCode.INVALID_FILE.getCode(),
+                        ResultStatusCode.INVALID_FILE.getMsg(),null);
+                return clientMessage;
+            }
         }
-        try {
-            file.transferTo(dest);
-            return "上传成功";
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "上传失败";
+        projectEntity.setFileEntity(fileEntities);
+        ProjectEntity p = fileService.saveProject(projectEntity);
+
+        clientMessage=new ClientMessage(ResultStatusCode.OK.getCode(),
+                ResultStatusCode.OK.getMsg(),p.getId());
+        return clientMessage;
     }
 
     //文件下载相关代码
-    @RequestMapping("/download")
+    @RequestMapping(value = "/download/{id}",method = RequestMethod.GET)
     public String downloadFile(HttpServletRequest request, HttpServletResponse response) {
         String fileName = "FileUploadTests.java";
         if (fileName != null) {

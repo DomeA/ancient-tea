@@ -1,7 +1,11 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services.impl;
 
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.BpmnFileEntity;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.FileEntity;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.ProjectEntity;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.repository.BpmnFileRepository;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.repository.FileRepository;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.repository.ProjectRepository;
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services.FileService;
 import com.mongodb.DB;
 import com.mongodb.client.MongoDatabase;
@@ -22,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +40,40 @@ public class FileServiceImpl implements FileService {
     MongoOperations mongoOperations;
 
     @Autowired
-    private MongoDbFactory mongodbfactory;
+    FileRepository fileRepository;
+
+    @Autowired
+    ProjectRepository projectRepository;
+
+    @Override
+    public FileEntity saveFile(FileEntity fileEntity) {
+        return fileRepository.save(fileEntity);
+    }
+
+    @Override
+    public ProjectEntity saveProject(ProjectEntity projectEntity) {
+        return projectRepository.save(projectEntity);
+    }
+
+    @Override
+    public void removeProject(String id) {
+        projectRepository.delete(id);
+    }
+
+    @Override
+    public void removeFile(String id) {
+        fileRepository.delete(id);
+    }
+
+    @Override
+    public FileEntity getFileById(String id) {
+        return fileRepository.findOne(id);
+    }
+
+    @Override
+    public ProjectEntity getProjectById(String id) {
+        return projectRepository.findOne(id);
+    }
 
     @Override
     public BpmnFileEntity saveBpmnFile(BpmnFileEntity file) {
@@ -48,12 +86,12 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public BpmnFileEntity getFileById(String id) {
+    public BpmnFileEntity getBpmnFileById(String id) {
         return bpmnFileRepository.findOne(id);
     }
 
     @Override
-    public List<BpmnFileEntity> listFilesByPage(int pageIndex, int pageSize) {
+    public List<BpmnFileEntity> listBpmnFilesByPage(int pageIndex, int pageSize) {
         Page<BpmnFileEntity> page = null;
         List<BpmnFileEntity> list = null;
 
@@ -82,6 +120,32 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
         }
       //  db.requestDone();
+    }
+
+    @Override
+    public void gridFSInput(String id, Class cla, InputStream inputStream) {
+        DB db = mongoOperations.getCollection(
+                mongoOperations.getCollectionName(cla)).getDB();
+        //db.requestStart();
+        GridFSInputFile gfsInput;
+        gfsInput = new GridFS(db, "fs")
+                .createFile(inputStream);
+        gfsInput.setId(id);
+        gfsInput.setFilename(UUID.randomUUID().toString().replace("-",""));// 保存到数据库的文件名为qq123456789logo
+        gfsInput.save();
+    }
+
+    @Override
+    public void gridFSInput(String id, Class cla, byte[] content) {
+        DB db = mongoOperations.getCollection(
+                mongoOperations.getCollectionName(cla)).getDB();
+        //db.requestStart();
+        GridFSInputFile gfsInput;
+        gfsInput = new GridFS(db, "fs")
+                .createFile(content);
+        gfsInput.setId(id);
+        gfsInput.setFilename(UUID.randomUUID().toString().replace("-",""));// 保存到数据库的文件名为qq123456789logo
+        gfsInput.save();
     }
 
     @Override

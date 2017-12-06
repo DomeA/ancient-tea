@@ -12,7 +12,9 @@ public class ProjectEntity {
     private String id;
     private List<FileEntity> fileEntity;
     private String name;
-    private Date createBy;
+    private String props;
+    private Date createTime;
+    private Date uploadTime;
 
     public String getId() {
         return id;
@@ -38,11 +40,28 @@ public class ProjectEntity {
         this.name = name;
     }
 
-    public Date getCreateBy() {
-        return createBy;
+
+    public Date getUploadTime() {
+        return uploadTime;
     }
 
-    public void setCreateBy(Date createBy) {
-        this.createBy = createBy;
+    public void setUploadTime(Date uploadTime) {
+        this.uploadTime = uploadTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getProps() {
+        return props;
+    }
+
+    public void setProps(String props) {
+        this.props = props;
     }
 }

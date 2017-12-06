@@ -1,13 +1,26 @@
 package com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.services;
 
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.BpmnFileEntity;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.FileEntity;
+import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.ProjectEntity;
 import org.bson.types.ObjectId;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
 public interface FileService {
+
+    FileEntity saveFile(FileEntity fileEntity);
+    ProjectEntity saveProject(ProjectEntity projectEntity);
+    void removeProject(String id);
+    void removeFile(String id);
+    FileEntity getFileById(String id);
+    ProjectEntity getProjectById(String id);
+
+
+
     /**
      * 保存文件
      * @param file
@@ -26,7 +39,7 @@ public interface FileService {
      * @param id
      * @return
      */
-    BpmnFileEntity getFileById(String id);
+    BpmnFileEntity getBpmnFileById(String id);
 
     /**
      * 分页查询，按上传时间降序
@@ -34,9 +47,11 @@ public interface FileService {
      * @param pageSize
      * @return
      */
-    List<BpmnFileEntity> listFilesByPage(int pageIndex, int pageSize);
+    List<BpmnFileEntity> listBpmnFilesByPage(int pageIndex, int pageSize);
 
     void gridFSInput(String id,Class cla, File file);
+    void gridFSInput(String id,Class cla, InputStream inputStream);
+    void gridFSInput(String id,Class cla, byte[] content);
     void gridFSOutput(ObjectId id,Class cla, OutputStream outputFilepath);
     void gridFSOutput(String name,Class cla, OutputStream outputFilepath);
 }

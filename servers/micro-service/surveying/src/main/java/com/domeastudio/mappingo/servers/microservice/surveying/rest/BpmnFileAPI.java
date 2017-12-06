@@ -38,7 +38,7 @@ public class BpmnFileAPI {
     @ResponseBody
     public ClientMessage listFilesByPage(@PathVariable int pageIndex, @PathVariable int pageSize){
         ClientMessage clientMessage;
-        List<BpmnFileEntity> bpmnFileEntities =  fileService.listFilesByPage(pageIndex, pageSize);
+        List<BpmnFileEntity> bpmnFileEntities =  fileService.listBpmnFilesByPage(pageIndex, pageSize);
         if(bpmnFileEntities==null){
             clientMessage=new ClientMessage(ResultStatusCode.NONE_FILE.getCode(),
                     ResultStatusCode.NONE_FILE.getMsg(),null);
@@ -58,7 +58,7 @@ public class BpmnFileAPI {
     @ResponseBody
     public ResponseEntity<Object> getFile(@PathVariable String id) {
 
-        BpmnFileEntity file = fileService.getFileById(id);
+        BpmnFileEntity file = fileService.getBpmnFileById(id);
 
         if (file != null) {
             return ResponseEntity
@@ -83,7 +83,7 @@ public class BpmnFileAPI {
     @ResponseBody
     public ResponseEntity<Object> getFileOnline(@PathVariable String id) {
 
-        BpmnFileEntity file = fileService.getFileById(id);
+        BpmnFileEntity file = fileService.getBpmnFileById(id);
 
         if (file != null) {
             return ResponseEntity
