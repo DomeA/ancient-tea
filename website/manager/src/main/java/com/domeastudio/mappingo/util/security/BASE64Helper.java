@@ -1,7 +1,5 @@
 package com.domeastudio.mappingo.util.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -9,8 +7,6 @@ import sun.misc.BASE64Encoder;
  * Created by domea on 16-4-14.
  */
 public class BASE64Helper {
-    private static Logger logger = LoggerFactory.getLogger(BASE64Helper.class);
-
     /**
      * BASE64解密
      *

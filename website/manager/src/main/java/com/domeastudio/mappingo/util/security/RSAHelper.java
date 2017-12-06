@@ -1,8 +1,5 @@
 package com.domeastudio.mappingo.util.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.crypto.Cipher;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
@@ -16,7 +13,6 @@ import java.util.Map;
  * Created by domea on 16-4-16.
  */
 public class RSAHelper {
-    private static Logger logger = LoggerFactory.getLogger(RSAHelper.class);
 
     private static final String PUBLIC_KEY = "RSAPublicKey";
     private static final String PRIVATE_KEY = "RSAPrivateKey";

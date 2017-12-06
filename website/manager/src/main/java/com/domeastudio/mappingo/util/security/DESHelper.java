@@ -1,9 +1,5 @@
 package com.domeastudio.mappingo.util.security;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -30,8 +26,6 @@ import java.security.SecureRandom;
  * </pre>
  */
 public class DESHelper {
-    private static Logger logger = LoggerFactory.getLogger(DESHelper.class);
-
     /**
      * ALGORITHM 算法 <br>
      * 可替换为以下任意一种算法，同时key值的size相应改变。
@@ -152,7 +146,7 @@ public class DESHelper {
      */
     public static String getKey(String seed, ALGORITHM algorithm) throws Exception {
         SecureRandom secureRandom;
-        logger.info("");
+        //logger.info("");
         if (seed != null) {
             secureRandom = new SecureRandom(BASE64Helper.decryptBASE64(seed));
         } else {

@@ -1,8 +1,5 @@
 package com.domeastudio.mappingo.util.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -16,8 +13,6 @@ import java.util.Random;
  * Created by domea on 16-4-16.
  */
 public class PBEHelper {
-    private static Logger logger = LoggerFactory.getLogger(PBEHelper.class);
-
     /**
      * 支持以下任意一种算法
      * <pre>
