@@ -96,8 +96,6 @@ public class FileAPI {
                     ResultStatusCode.INVALID_FILE_ID.getMsg(), null);
             return clientMessage;
         }
-
-
         httpServletResponse.setContentType("application/force-download");// 设置强制下载不打开
         httpServletResponse.addHeader("Content-Disposition",
                 "attachment;fileName=" + fileEntity.getName() + "_" + fileEntity.getFileNameUUID());// 设置文件名
@@ -105,12 +103,7 @@ public class FileAPI {
         try {
             os = httpServletResponse.getOutputStream();
             fileService.gridFSOutput(fileEntity.getFileNameUUID(), FileEntity.class, os);
-
             os.flush();
-//                    while (i != -1) {
-//                        os.write(buffer, 0, i);
-//                        i = bis.read(buffer);
-//                    }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
