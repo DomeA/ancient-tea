@@ -105,6 +105,7 @@ public class FileAPI {
         try {
             os = httpServletResponse.getOutputStream();
             fileService.gridFSOutput(fileEntity.getFileNameUUID(), FileEntity.class, os);
+
             os.flush();
 //                    while (i != -1) {
 //                        os.write(buffer, 0, i);
