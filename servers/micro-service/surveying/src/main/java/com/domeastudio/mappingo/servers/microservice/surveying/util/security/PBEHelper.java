@@ -47,7 +47,7 @@ public class PBEHelper {
      * @return
      * @throws Exception
      */
-    private static Key toKey(String password,ALGORITHM algorithm) throws Exception {
+    private static Key toKey(String password, ALGORITHM algorithm) throws Exception {
         PBEKeySpec keySpec = new PBEKeySpec(password.toCharArray());
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(algorithm.name());
         SecretKey secretKey = keyFactory.generateSecret(keySpec);
@@ -57,16 +57,16 @@ public class PBEHelper {
     /**
      * 加密
      *
-     * @param data 数据
+     * @param data     数据
      * @param password 密码
-     * @param salt  盐
+     * @param salt     盐
      * @return
      * @throws Exception
      */
-    public static byte[] encrypt(byte[] data, String password, byte[] salt,ALGORITHM algorithm)
+    public static byte[] encrypt(byte[] data, String password, byte[] salt, ALGORITHM algorithm)
             throws Exception {
 
-        Key key = toKey(password,algorithm);
+        Key key = toKey(password, algorithm);
 
         PBEParameterSpec paramSpec = new PBEParameterSpec(salt, 100);
         Cipher cipher = Cipher.getInstance(algorithm.name());
@@ -79,16 +79,16 @@ public class PBEHelper {
     /**
      * 解密
      *
-     * @param data  数据
+     * @param data     数据
      * @param password 密码
-     * @param salt  盐
+     * @param salt     盐
      * @return
      * @throws Exception
      */
-    public static byte[] decrypt(byte[] data, String password, byte[] salt,ALGORITHM algorithm)
+    public static byte[] decrypt(byte[] data, String password, byte[] salt, ALGORITHM algorithm)
             throws Exception {
 
-        Key key = toKey(password,algorithm);
+        Key key = toKey(password, algorithm);
 
         PBEParameterSpec paramSpec = new PBEParameterSpec(salt, 100);
         Cipher cipher = Cipher.getInstance(algorithm.name());
@@ -107,11 +107,11 @@ public class PBEHelper {
         byte[] salt = PBEHelper.getSalt();
         System.err.println("盐: " + new BigInteger(salt).toString(16));
 
-        byte[] data = PBEHelper.encrypt(input, pwd, salt,ALGORITHM.PBEWithMD5AndDES);
+        byte[] data = PBEHelper.encrypt(input, pwd, salt, ALGORITHM.PBEWithMD5AndDES);
 
         System.err.println("加密后: " + BASE64Helper.encryptBASE64(data));
 
-        byte[] output = PBEHelper.decrypt(data, pwd, salt,ALGORITHM.PBEWithMD5AndDES);
+        byte[] output = PBEHelper.decrypt(data, pwd, salt, ALGORITHM.PBEWithMD5AndDES);
         String outputStr = new String(output);
 
         System.err.println("解密后: " + outputStr);

@@ -5,8 +5,7 @@ public class ClientMessage {
     private String msg;
     private Object data;
 
-    public ClientMessage(int code, String msg, Object data)
-    {
+    public ClientMessage(int code, String msg, Object data) {
         this.code = code;
         this.msg = msg;
         this.data = data;

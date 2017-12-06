@@ -31,7 +31,8 @@ public class RuserresourceEntity {
         RuserresourceEntity that = (RuserresourceEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (tresourceByReid != null ? !tresourceByReid.equals(that.tresourceByReid) : that.tresourceByReid != null) return false;
+        if (tresourceByReid != null ? !tresourceByReid.equals(that.tresourceByReid) : that.tresourceByReid != null)
+            return false;
         if (tuserByUid != null ? !tuserByUid.equals(that.tuserByUid) : that.tuserByUid != null) return false;
 
         return true;

@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TResourceRepository extends JpaRepository<TresourceEntity,String> {
+public interface TResourceRepository extends JpaRepository<TresourceEntity, String> {
     TresourceEntity findByName(String name);
 }

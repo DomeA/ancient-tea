@@ -3,5 +3,5 @@ package com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.r
 import com.domeastudio.mappingo.servers.microservice.surveying.domain.mongodb.pojo.ProjectEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ProjectRepository extends MongoRepository<ProjectEntity,String> {
+public interface ProjectRepository extends MongoRepository<ProjectEntity, String> {
 }

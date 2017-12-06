@@ -72,7 +72,7 @@ public class SecondaryConfig {
     }
 
     @Bean("transactionTemplateSecondary")
-    public TransactionTemplate transactionTemplate(PlatformTransactionManager platformTransactionManager){
+    public TransactionTemplate transactionTemplate(PlatformTransactionManager platformTransactionManager) {
         return new TransactionTemplate(platformTransactionManager);
     }
 }

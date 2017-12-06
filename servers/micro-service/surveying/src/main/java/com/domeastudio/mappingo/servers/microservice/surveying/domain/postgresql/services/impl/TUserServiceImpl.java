@@ -31,16 +31,15 @@ public class TUserServiceImpl implements TUserService {
 
     @Override
     public TuserEntity login(String param, String pwd) {
-        TuserEntity tuserEntity=null;
+        TuserEntity tuserEntity = null;
 
         tuserEntity = findByNameOrEmailOrPhone(param);
-        if(tuserEntity==null){
+        if (tuserEntity == null) {
             return null;
-        }else {
+        } else {
 
-            String md5Password = MD5SHAHelper.toString(MD5SHAHelper.encryptByMD5((pwd+tuserEntity.getSalt()).getBytes()));
-            if (md5Password.compareTo(tuserEntity.getPwd()) != 0)
-            {
+            String md5Password = MD5SHAHelper.toString(MD5SHAHelper.encryptByMD5((pwd + tuserEntity.getSalt()).getBytes()));
+            if (md5Password.compareTo(tuserEntity.getPwd()) != 0) {
                 return null;
             }
             return tuserEntity;
@@ -94,13 +93,13 @@ public class TUserServiceImpl implements TUserService {
 
     @Override
     public TuserEntity findByNameOrEmailOrPhone(String param) {
-        TuserEntity tuserEntity=null;
+        TuserEntity tuserEntity = null;
         tuserEntity = tUserRepository.findByName(param);
-        if(tuserEntity==null){
+        if (tuserEntity == null) {
             tuserEntity = tUserRepository.findByPhone(param);
-            if(tuserEntity==null){
+            if (tuserEntity == null) {
                 tuserEntity = tUserRepository.findByEmail(param);
-                if(tuserEntity==null){
+                if (tuserEntity == null) {
                     return null;
                 }
             }
@@ -110,45 +109,45 @@ public class TUserServiceImpl implements TUserService {
 
     @Override
     public List<String> findRoleByName(TuserEntity entity) {
-        List<String> names=new ArrayList<>();
+        List<String> names = new ArrayList<>();
         List<RuserroleEntity> ruserroleEntities = rUserRoleRepository.findByTuserByUid(entity);
-        for (RuserroleEntity rr: ruserroleEntities) {
-            String name=rr.getTroleByRid().getName();
+        for (RuserroleEntity rr : ruserroleEntities) {
+            String name = rr.getTroleByRid().getName();
             names.add(name);
         }
         return names;
     }
 
     @Override
-    public Boolean createUser(String name, String pwd,String email, String phone,Integer term) {
-        if(tUserRepository.findByName(name)!=null||
-                tUserRepository.findByEmail(email)!=null||
-                tUserRepository.findByPhone(phone)!=null){
+    public Boolean createUser(String name, String pwd, String email, String phone, Integer term) {
+        if (tUserRepository.findByName(name) != null ||
+                tUserRepository.findByEmail(email) != null ||
+                tUserRepository.findByPhone(phone) != null) {
             return false;
         }
-        String salt= UUID.randomUUID().toString().replace("-","");
-        TuserEntity tuserEntity=new TuserEntity();
+        String salt = UUID.randomUUID().toString().replace("-", "");
+        TuserEntity tuserEntity = new TuserEntity();
         tuserEntity.setEmail(email);
         tuserEntity.setName(name);
-        String pwdstr=MD5SHAHelper.toString(MD5SHAHelper.encryptByMD5((pwd+salt).getBytes()));
+        String pwdstr = MD5SHAHelper.toString(MD5SHAHelper.encryptByMD5((pwd + salt).getBytes()));
         tuserEntity.setPwd(pwdstr);
         tuserEntity.setPhone(phone);
         tuserEntity.setSalt(salt);
-        String rtime= DateUtil.dateToString("yyyy-MM-dd",new Date(), "MEDIUM");
+        String rtime = DateUtil.dateToString("yyyy-MM-dd", new Date(), "MEDIUM");
         tuserEntity.setRegistTime(rtime);
         tuserEntity.setAuthorTime(term);
-        String token=UUID.randomUUID().toString().replace("-","");
+        String token = UUID.randomUUID().toString().replace("-", "");
         tuserEntity.setToken(token);
         save(tuserEntity);
         return true;
     }
 
     @Override
-    public Boolean createRole(String name,String describe) {
-        if(tRoleRepository.findByName(name)!=null){
+    public Boolean createRole(String name, String describe) {
+        if (tRoleRepository.findByName(name) != null) {
             return false;
         }
-        TroleEntity troleEntity=new TroleEntity();
+        TroleEntity troleEntity = new TroleEntity();
         troleEntity.setName(name);
         troleEntity.setDescribe(describe);
         save(troleEntity);
@@ -157,10 +156,10 @@ public class TUserServiceImpl implements TUserService {
 
     @Override
     public Boolean createResource(String name) {
-        if(tResourceRepository.findByName(name)!=null){
+        if (tResourceRepository.findByName(name) != null) {
             return false;
         }
-        TresourceEntity tresourceEntity=new TresourceEntity();
+        TresourceEntity tresourceEntity = new TresourceEntity();
         tresourceEntity.setName(name);
 
         save(tresourceEntity);
@@ -169,7 +168,7 @@ public class TUserServiceImpl implements TUserService {
 
     @Override
     public Boolean allocationUserRole(TuserEntity tuserEntity, TroleEntity troleEntity) {
-        if(rUserRoleRepository.findByTuserByUidAndTroleByRid(tuserEntity,troleEntity)==null) {
+        if (rUserRoleRepository.findByTuserByUidAndTroleByRid(tuserEntity, troleEntity) == null) {
             RuserroleEntity ruserroleEntity = new RuserroleEntity();
             ruserroleEntity.setTuserByUid(tuserEntity);
             ruserroleEntity.setTroleByRid(troleEntity);
@@ -181,7 +180,7 @@ public class TUserServiceImpl implements TUserService {
 
     @Override
     public Boolean allocationUserResource(TuserEntity tuserEntity, TresourceEntity tresourceEntity) {
-        if(rUserResourceRepository.findByTuserByUidAndTresourceByReid(tuserEntity,tresourceEntity)==null) {
+        if (rUserResourceRepository.findByTuserByUidAndTresourceByReid(tuserEntity, tresourceEntity) == null) {
             RuserresourceEntity ruserresourceEntity = new RuserresourceEntity();
             ruserresourceEntity.setTresourceByReid(tresourceEntity);
             ruserresourceEntity.setTuserByUid(tuserEntity);
@@ -193,7 +192,7 @@ public class TUserServiceImpl implements TUserService {
 
     @Override
     public Boolean allocationRoleResource(TroleEntity troleEntity, TresourceEntity tresourceEntity) {
-        if(rRoleResourceRepository.findByTroleByRidAndTresourceByReid(troleEntity,tresourceEntity)==null) {
+        if (rRoleResourceRepository.findByTroleByRidAndTresourceByReid(troleEntity, tresourceEntity) == null) {
             RroleresourceEntity rroleresourceEntity = new RroleresourceEntity();
             rroleresourceEntity.setTresourceByReid(tresourceEntity);
             rroleresourceEntity.setTroleByRid(troleEntity);

@@ -34,23 +34,21 @@ public class JWTAuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         ClientMessage clientMessage;
-        HttpServletRequest httpRequest = (HttpServletRequest)servletRequest;
+        HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         String auth = httpRequest.getHeader("Authorization");
-        TuserEntity tuserEntity=null;
-        if ((auth != null) && (auth.length() > 7))
-        {
+        TuserEntity tuserEntity = null;
+        if ((auth != null) && (auth.length() > 7)) {
             String HeadStr = auth.substring(0, 6).toLowerCase();
-            if (HeadStr.compareTo("bearer") == 0)
-            {
+            if (HeadStr.compareTo("bearer") == 0) {
 
                 auth = auth.substring(7, auth.length());
-                String[] authArry=auth.split("\\.");
+                String[] authArry = auth.split("\\.");
                 try {
                     String str = new String(BASE64Helper.decryptBASE64(authArry[1]));
-                    Map<String,String> user= JsonStringUtil.toMap(str);
-                    tuserEntity= tUserService.findUserOne(user.get("userid"));
-                    Integer sub= DateUtil.getDateSpace(tuserEntity.getRegistTime(),DateUtil.dateToString("yyyy-MM-dd",new Date(),"MEDIUM"));
-                    if(sub<=tuserEntity.getAuthorTime()&&tuserEntity!=null&&JwtUtil.parseJWT(auth, tuserEntity.getToken()) != null){
+                    Map<String, String> user = JsonStringUtil.toMap(str);
+                    tuserEntity = tUserService.findUserOne(user.get("userid"));
+                    Integer sub = DateUtil.getDateSpace(tuserEntity.getRegistTime(), DateUtil.dateToString("yyyy-MM-dd", new Date(), "MEDIUM"));
+                    if (sub <= tuserEntity.getAuthorTime() && tuserEntity != null && JwtUtil.parseJWT(auth, tuserEntity.getToken()) != null) {
                         filterChain.doFilter(servletRequest, servletResponse);
                         return;
                     }

@@ -30,27 +30,29 @@ public class BpmnFileAPI {
 
     /**
      * 分页查询文件
+     *
      * @param pageIndex
      * @param pageSize
      * @return
      */
     @GetMapping("/bpmn/{pageIndex}/{pageSize}")
     @ResponseBody
-    public ClientMessage listFilesByPage(@PathVariable int pageIndex, @PathVariable int pageSize){
+    public ClientMessage listFilesByPage(@PathVariable int pageIndex, @PathVariable int pageSize) {
         ClientMessage clientMessage;
-        List<BpmnFileEntity> bpmnFileEntities =  fileService.listBpmnFilesByPage(pageIndex, pageSize);
-        if(bpmnFileEntities==null){
-            clientMessage=new ClientMessage(ResultStatusCode.NONE_FILE.getCode(),
-                    ResultStatusCode.NONE_FILE.getMsg(),null);
+        List<BpmnFileEntity> bpmnFileEntities = fileService.listBpmnFilesByPage(pageIndex, pageSize);
+        if (bpmnFileEntities == null) {
+            clientMessage = new ClientMessage(ResultStatusCode.NONE_FILE.getCode(),
+                    ResultStatusCode.NONE_FILE.getMsg(), null);
             return clientMessage;
         }
-        clientMessage=new ClientMessage(ResultStatusCode.OK.getCode(),
-                ResultStatusCode.OK.getMsg(),bpmnFileEntities);
+        clientMessage = new ClientMessage(ResultStatusCode.OK.getCode(),
+                ResultStatusCode.OK.getMsg(), bpmnFileEntities);
         return clientMessage;
     }
 
     /**
      * 获取文件片信息
+     *
      * @param id
      * @return
      */
@@ -64,9 +66,9 @@ public class BpmnFileAPI {
             return ResponseEntity
                     .ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=\"" + file.getName() + "\"")
-                    .header(HttpHeaders.CONTENT_TYPE, "application/octet-stream" )
-                    .header(HttpHeaders.CONTENT_LENGTH, file.getSize()+"")
-                    .header("Connection",  "close")
+                    .header(HttpHeaders.CONTENT_TYPE, "application/octet-stream")
+                    .header(HttpHeaders.CONTENT_LENGTH, file.getSize() + "")
+                    .header("Connection", "close")
                     .body(file.getContent());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File was not fount");
@@ -76,6 +78,7 @@ public class BpmnFileAPI {
 
     /**
      * 在线显示文件
+     *
      * @param id
      * @return
      */
@@ -89,9 +92,9 @@ public class BpmnFileAPI {
             return ResponseEntity
                     .ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "fileName=\"" + file.getName() + "\"")
-                    .header(HttpHeaders.CONTENT_TYPE, file.getContentType() )
-                    .header(HttpHeaders.CONTENT_LENGTH, file.getSize()+"")
-                    .header("Connection",  "close")
+                    .header(HttpHeaders.CONTENT_TYPE, file.getContentType())
+                    .header(HttpHeaders.CONTENT_LENGTH, file.getSize() + "")
+                    .header("Connection", "close")
                     .body(file.getContent());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File was not fount");
@@ -101,6 +104,7 @@ public class BpmnFileAPI {
 
     /**
      * 上传
+     *
      * @param file
      * @return
      */
@@ -116,18 +120,18 @@ public class BpmnFileAPI {
             bpmnFileEntity.setUploadDate(new Date());
             bpmnFileEntity.setMd5(MD5SHAHelper.toString(MD5SHAHelper.encryptByMD5(file.getInputStream())));
             BpmnFileEntity bpmnFile = fileService.saveBpmnFile(bpmnFileEntity);
-            if(bpmnFile==null){
-                clientMessage=new ClientMessage(ResultStatusCode.INVALID_FILE.getCode(),
-                        ResultStatusCode.INVALID_FILE.getMsg(),null);
+            if (bpmnFile == null) {
+                clientMessage = new ClientMessage(ResultStatusCode.INVALID_FILE.getCode(),
+                        ResultStatusCode.INVALID_FILE.getMsg(), null);
                 return clientMessage;
             }
-            clientMessage=new ClientMessage(ResultStatusCode.OK.getCode(),
-                    ResultStatusCode.OK.getMsg(),bpmnFile.getId());
+            clientMessage = new ClientMessage(ResultStatusCode.OK.getCode(),
+                    ResultStatusCode.OK.getMsg(), bpmnFile.getId());
             return clientMessage;
         } catch (IOException | NoSuchAlgorithmException ex) {
             ex.printStackTrace();
-            clientMessage=new ClientMessage(ResultStatusCode.INVALID_FILE.getCode(),
-                    ResultStatusCode.INVALID_FILE.getMsg(),null);
+            clientMessage = new ClientMessage(ResultStatusCode.INVALID_FILE.getCode(),
+                    ResultStatusCode.INVALID_FILE.getMsg(), null);
             return clientMessage;
         }
     }
@@ -162,6 +166,7 @@ public class BpmnFileAPI {
 
     /**
      * 删除文件
+     *
      * @param id
      * @return
      */
@@ -171,13 +176,13 @@ public class BpmnFileAPI {
         ClientMessage clientMessage;
         try {
             fileService.removeBpmnFile(id);
-            clientMessage=new ClientMessage(ResultStatusCode.OK.getCode(),
-                    ResultStatusCode.OK.getMsg(),null);
+            clientMessage = new ClientMessage(ResultStatusCode.OK.getCode(),
+                    ResultStatusCode.OK.getMsg(), null);
             return clientMessage;
         } catch (Exception e) {
             e.printStackTrace();
-            clientMessage=new ClientMessage(ResultStatusCode.SYSTEM_ERR.getCode(),
-                    ResultStatusCode.SYSTEM_ERR.getMsg(),null);
+            clientMessage = new ClientMessage(ResultStatusCode.SYSTEM_ERR.getCode(),
+                    ResultStatusCode.SYSTEM_ERR.getMsg(), null);
             return clientMessage;
         }
     }

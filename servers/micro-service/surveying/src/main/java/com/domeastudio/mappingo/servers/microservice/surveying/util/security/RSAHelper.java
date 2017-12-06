@@ -20,18 +20,16 @@ public class RSAHelper {
 
     private static final String PUBLIC_KEY = "RSAPublicKey";
     private static final String PRIVATE_KEY = "RSAPrivateKey";
+
     /**
      * 用私钥对信息生成数字签名
      *
-     * @param data
-     *            加密数据
-     * @param privateKey
-     *            私钥
-     *
+     * @param data       加密数据
+     * @param privateKey 私钥
      * @return
      * @throws Exception
      */
-    public static String sign(byte[] data, String privateKey,ALGORITHM keyAlgorithm,ALGORITHM signatureAlgorithm) throws Exception {
+    public static String sign(byte[] data, String privateKey, ALGORITHM keyAlgorithm, ALGORITHM signatureAlgorithm) throws Exception {
         // 解密由base64编码的私钥
         byte[] keyBytes = BASE64Helper.decryptBASE64(privateKey);
 
@@ -55,18 +53,13 @@ public class RSAHelper {
     /**
      * 校验数字签名
      *
-     * @param data
-     *            加密数据
-     * @param publicKey
-     *            公钥
-     * @param sign
-     *            数字签名
-     *
+     * @param data      加密数据
+     * @param publicKey 公钥
+     * @param sign      数字签名
      * @return 校验成功返回true 失败返回false
      * @throws Exception
-     *
      */
-    public static Boolean verify(byte[] data, String publicKey, String sign,ALGORITHM keyAlgorithm,ALGORITHM signatureAlgorithm)
+    public static Boolean verify(byte[] data, String publicKey, String sign, ALGORITHM keyAlgorithm, ALGORITHM signatureAlgorithm)
             throws Exception {
 
         // 解密由base64编码的公钥
@@ -98,7 +91,7 @@ public class RSAHelper {
      * @return
      * @throws Exception
      */
-    public static byte[] decryptByPrivateKey(byte[] data, String key,ALGORITHM keyAlgorithm)
+    public static byte[] decryptByPrivateKey(byte[] data, String key, ALGORITHM keyAlgorithm)
             throws Exception {
         // 对密钥解密
         byte[] keyBytes = BASE64Helper.decryptBASE64(key);
@@ -124,7 +117,7 @@ public class RSAHelper {
      * @return
      * @throws Exception
      */
-    public static byte[] decryptByPublicKey(byte[] data, String key,ALGORITHM keyAlgorithm)
+    public static byte[] decryptByPublicKey(byte[] data, String key, ALGORITHM keyAlgorithm)
             throws Exception {
         // 对密钥解密
         byte[] keyBytes = BASE64Helper.decryptBASE64(key);
@@ -150,7 +143,7 @@ public class RSAHelper {
      * @return
      * @throws Exception
      */
-    public static byte[] encryptByPublicKey(byte[] data, String key,ALGORITHM keyAlgorithm)
+    public static byte[] encryptByPublicKey(byte[] data, String key, ALGORITHM keyAlgorithm)
             throws Exception {
         // 对公钥解密
         byte[] keyBytes = BASE64Helper.decryptBASE64(key);
@@ -176,7 +169,7 @@ public class RSAHelper {
      * @return
      * @throws Exception
      */
-    public static byte[] encryptByPrivateKey(byte[] data, String key,ALGORITHM keyAlgorithm)
+    public static byte[] encryptByPrivateKey(byte[] data, String key, ALGORITHM keyAlgorithm)
             throws Exception {
         // 对密钥解密
         byte[] keyBytes = BASE64Helper.decryptBASE64(key);
@@ -246,6 +239,7 @@ public class RSAHelper {
         keyMap.put(PRIVATE_KEY, privateKey);
         return keyMap;
     }
+
     public static void main(String[] args) throws Exception {
         String publicKey;
         String privateKey;
@@ -260,10 +254,10 @@ public class RSAHelper {
         String inputStr = "abc";
         byte[] data = inputStr.getBytes();
 
-        byte[] encodedData = RSAHelper.encryptByPublicKey(data, publicKey,ALGORITHM.RSA);
+        byte[] encodedData = RSAHelper.encryptByPublicKey(data, publicKey, ALGORITHM.RSA);
 
         byte[] decodedData = RSAHelper.decryptByPrivateKey(encodedData,
-                privateKey,ALGORITHM.RSA);
+                privateKey, ALGORITHM.RSA);
 
 
         String outputStr = new String(decodedData);
@@ -273,10 +267,10 @@ public class RSAHelper {
         String inputStr1 = "sign";
         byte[] data1 = inputStr1.getBytes();
 
-        byte[] encodedData1 = RSAHelper.encryptByPrivateKey(data1, privateKey,ALGORITHM.RSA);
+        byte[] encodedData1 = RSAHelper.encryptByPrivateKey(data1, privateKey, ALGORITHM.RSA);
 
         byte[] decodedData1 = RSAHelper
-                .decryptByPublicKey(encodedData1, publicKey,ALGORITHM.RSA);
+                .decryptByPublicKey(encodedData1, publicKey, ALGORITHM.RSA);
 
         String outputStr1 = new String(decodedData1);
         System.err.println("加密前: " + inputStr1 + "\n\r" + "解密后: " + outputStr1);
@@ -284,11 +278,11 @@ public class RSAHelper {
 
         System.err.println("私钥签名——公钥验证签名");
         // 产生签名
-        String sign = RSAHelper.sign(encodedData1, privateKey,ALGORITHM.RSA,ALGORITHM.MD5withRSA);
+        String sign = RSAHelper.sign(encodedData1, privateKey, ALGORITHM.RSA, ALGORITHM.MD5withRSA);
         System.err.println("签名:\r" + sign);
 
         // 验证签名
-        boolean status = RSAHelper.verify(encodedData1, publicKey, sign,ALGORITHM.RSA,ALGORITHM.MD5withRSA);
+        boolean status = RSAHelper.verify(encodedData1, publicKey, sign, ALGORITHM.RSA, ALGORITHM.MD5withRSA);
         System.err.println("状态:\r" + status);
     }
 

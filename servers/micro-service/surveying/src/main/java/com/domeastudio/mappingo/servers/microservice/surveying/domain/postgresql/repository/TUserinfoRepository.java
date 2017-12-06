@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TUserinfoRepository extends JpaRepository<TuserinfoEntity,String> {
+public interface TUserinfoRepository extends JpaRepository<TuserinfoEntity, String> {
 }

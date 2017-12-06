@@ -8,9 +8,8 @@ import java.util.Date;
 
 public class DateUtil {
     /**
-     *
      * @param early <String>
-     * @param late <String>
+     * @param late  <String>
      * @return int
      * @throws ParseException
      */
@@ -29,14 +28,15 @@ public class DateUtil {
 
     /**
      * @param early <String>
-     * @param late <String>
+     * @param late  <String>
      * @return int
      * @throws ParseException
      */
     public static int getDateSpace(String early, String late)
             throws ParseException {
 
-        Calendar calst = Calendar.getInstance();;
+        Calendar calst = Calendar.getInstance();
+        ;
         Calendar caled = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         calst.setTime(sdf.parse(early));
@@ -50,7 +50,7 @@ public class DateUtil {
         caled.set(Calendar.MINUTE, 0);
         caled.set(Calendar.SECOND, 0);
         //得到两个日期相差的天数
-        int days = ((int)(caled.getTime().getTime()/1000)-(int)(calst.getTime().getTime()/1000))/3600/24;
+        int days = ((int) (caled.getTime().getTime() / 1000) - (int) (calst.getTime().getTime() / 1000)) / 3600 / 24;
 
         return days;
     }
@@ -74,24 +74,25 @@ public class DateUtil {
         return days;
     }
 
-    public static String dateToString(String formatStr,Date date, String type) {
+    public static String dateToString(String formatStr, Date date, String type) {
         String str = null;
         DateFormat format = new SimpleDateFormat(formatStr);
-        if (type.compareTo("SHORT")==0) {
+        if (type.compareTo("SHORT") == 0) {
             // 07-1-18
             format = DateFormat.getDateInstance(DateFormat.SHORT);
             str = format.format(date);
-        } else if (type.compareTo("MEDIUM")==0) {
+        } else if (type.compareTo("MEDIUM") == 0) {
             // 2007-1-18
             format = DateFormat.getDateInstance(DateFormat.MEDIUM);
             str = format.format(date);
-        } else if (type.compareTo("FULL")==0) {
+        } else if (type.compareTo("FULL") == 0) {
             // 2007年1月18日 星期四
             format = DateFormat.getDateInstance(DateFormat.FULL);
             str = format.format(date);
         }
         return str;
     }
+
     public static Date stringToDate(String str) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
@@ -104,6 +105,6 @@ public class DateUtil {
             return null;
         }
         // 2012-02-24
-       // date = String.valueOf(str);
+        // date = String.valueOf(str);
     }
 }

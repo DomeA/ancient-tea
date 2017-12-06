@@ -13,6 +13,7 @@ public class SurveyingApplication {
     public static void main(String[] args) {
         SpringApplication.run(SurveyingApplication.class, args);
     }
+
     //-----------------下面代码处理初始化一个用户-------------
     //用户名:system 用户密码:domea 用户角色:ROLE_SYSADMIN
     //默认角色ROLE_SIGHTSEER
@@ -20,34 +21,35 @@ public class SurveyingApplication {
     TUserService tUserService;
 
     @Autowired
-    public void init(){
+    public void init() {
         try {
-            Boolean uf=tUserService.createUser("system", "domea","domeastudio@hotmail.com","18182669306",999999);
-            Boolean rf1=tUserService.createRole("ROLE_SYSADMIN","系统管理员角色");
-            Boolean rf2=tUserService.createRole("ROLE_SIGHTSEER","默认角色,游客角色");
+            Boolean uf = tUserService.createUser("system", "domea", "domeastudio@hotmail.com", "18182669306", 999999);
+            Boolean rf1 = tUserService.createRole("ROLE_SYSADMIN", "系统管理员角色");
+            Boolean rf2 = tUserService.createRole("ROLE_SIGHTSEER", "默认角色,游客角色");
 
-            TuserEntity tuserEntity=tUserService.findUserByName("system");
-            TroleEntity troleEntity=tUserService.findRoleByName("ROLE_SYSADMIN");
-            Boolean urf=tUserService.allocationUserRole(tuserEntity,troleEntity);
+            TuserEntity tuserEntity = tUserService.findUserByName("system");
+            TroleEntity troleEntity = tUserService.findRoleByName("ROLE_SYSADMIN");
+            Boolean urf = tUserService.allocationUserRole(tuserEntity, troleEntity);
 
-            if(uf){
+            if (uf) {
                 System.out.println("管理员账户：system 创建成功");
-                System.out.println("管理员账户clientId："+tuserEntity.getToken());
-            }else{
+                System.out.println("管理员账户clientId：" + tuserEntity.getToken());
+            } else {
                 System.out.println("管理员账户：system 已经存在");
             }
-            if(rf1){
+            if (rf1) {
                 System.out.println("系统管理员角色：ROLE_SYSADMIN 创建成功");
-            }else{
+            } else {
                 System.out.println("系统管理员角色：ROLE_SYSADMIN 已经存在");
             }
-            if(rf2){
+            if (rf2) {
                 System.out.println("系统管理员角色：ROLE_SIGHTSEER 创建成功");
-            }else{
+            } else {
                 System.out.println("系统管理员角色：ROLE_SIGHTSEER 已经存在");
-            }if(urf){
+            }
+            if (urf) {
                 System.out.println("管理员账户：[system] 被赋予 系统管理员角色：[ROLE_SYSADMIN] 成功");
-            }else{
+            } else {
                 System.out.println("管理员账户：[system] 被赋予 系统管理员角色：[ROLE_SYSADMIN] 已经存在");
             }
         } catch (Exception e) {

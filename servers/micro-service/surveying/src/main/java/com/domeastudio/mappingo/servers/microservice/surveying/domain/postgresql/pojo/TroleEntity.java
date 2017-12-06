@@ -76,6 +76,7 @@ public class TroleEntity {
     public void setRuserrolesByRid(Set<RuserroleEntity> ruserrolesByRid) {
         this.ruserrolesByRid = ruserrolesByRid;
     }
+
     @Basic
     @Column(name = "describe")
     public String getDescribe() {

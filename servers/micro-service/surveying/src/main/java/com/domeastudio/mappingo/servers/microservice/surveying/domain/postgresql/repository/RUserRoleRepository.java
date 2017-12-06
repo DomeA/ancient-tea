@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RUserRoleRepository extends JpaRepository<RuserroleEntity,String> {
+public interface RUserRoleRepository extends JpaRepository<RuserroleEntity, String> {
     List<RuserroleEntity> findByTuserByUid(TuserEntity tuserEntity);
 
     RuserroleEntity findByTuserByUidAndTroleByRid(TuserEntity tuserEntity, TroleEntity troleEntity);

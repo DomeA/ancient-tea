@@ -12,23 +12,19 @@ import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
-    public static Claims parseJWT(String jsonWebToken, String clientId){
-        try
-        {
+    public static Claims parseJWT(String jsonWebToken, String clientId) {
+        try {
             Claims claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary(clientId))
                     .parseClaimsJws(jsonWebToken).getBody();
             return claims;
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             return null;
         }
     }
 
     public static String createJWT(String name, String userId, String role,
-                                   String audience, String issuer, long TTLMillis, String clientId)
-    {
+                                   String audience, String issuer, long TTLMillis, String clientId) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
         long nowMillis = System.currentTimeMillis();

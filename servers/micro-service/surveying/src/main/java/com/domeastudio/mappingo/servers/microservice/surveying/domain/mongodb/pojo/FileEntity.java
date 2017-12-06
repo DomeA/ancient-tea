@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.Id;
 import java.util.Date;
 
-@Document(collection="sys_workflow_info")
+@Document(collection = "sys_workflow_info")
 public class FileEntity {
     @Id
     private String id;
@@ -14,6 +14,7 @@ public class FileEntity {
     private Long size;
     private Date uploadDate;
     private String md5;
+    private String fileNameUUID;
 
     public String getId() {
         return id;
@@ -61,5 +62,13 @@ public class FileEntity {
 
     public void setMd5(String md5) {
         this.md5 = md5;
+    }
+
+    public String getFileNameUUID() {
+        return fileNameUUID;
+    }
+
+    public void setFileNameUUID(String fileNameUUID) {
+        this.fileNameUUID = fileNameUUID;
     }
 }

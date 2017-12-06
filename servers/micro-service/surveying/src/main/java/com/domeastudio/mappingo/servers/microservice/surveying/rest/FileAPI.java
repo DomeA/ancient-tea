@@ -11,18 +11,15 @@ import com.domeastudio.mappingo.servers.microservice.surveying.util.security.MD5
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -32,34 +29,36 @@ public class FileAPI {
 
     @Autowired
     private FileService fileService;
+
     //文件上传相关代码
     //@RequestBody要求客户端发过来的是json数据 form表单请求不需要
     @PostMapping(value = "/upload")
     public ClientMessage upload(ProjectDef projectDef, @RequestParam("file") MultipartFile[] multipartFiles) {
         ClientMessage clientMessage;
-        if (multipartFiles.length<1){
-            clientMessage=new ClientMessage(ResultStatusCode.INVALID_FILES.getCode(),
-                    ResultStatusCode.INVALID_FILES.getMsg(),null);
+        if (multipartFiles.length < 1) {
+            clientMessage = new ClientMessage(ResultStatusCode.INVALID_FILES.getCode(),
+                    ResultStatusCode.INVALID_FILES.getMsg(), null);
             return clientMessage;
         }
         //BufferedOutputStream stream=null;
-        ProjectEntity projectEntity=new ProjectEntity();
+        ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.setUploadTime(new Date());
         projectEntity.setCreateTime(DateUtil.stringToDate(projectDef.getCreateTime()));
         projectEntity.setName(projectDef.getName());
         projectEntity.setProps(projectDef.getPros());
-        List<FileEntity> fileEntities=new ArrayList<>();
-        for (MultipartFile file:multipartFiles) {
+        List<FileEntity> fileEntities = new ArrayList<>();
+        for (MultipartFile file : multipartFiles) {
             if (!file.isEmpty()) {
                 try {
-                    FileEntity fileEntity=new FileEntity();
+                    FileEntity fileEntity = new FileEntity();
                     fileEntity.setName(file.getOriginalFilename());
                     fileEntity.setUploadDate(new Date());
                     fileEntity.setSize(file.getSize());
                     fileEntity.setContentType(file.getContentType());
                     fileEntity.setMd5(MD5SHAHelper.toString(MD5SHAHelper.encryptByMD5(file.getInputStream())));
+                    String fileUUID = fileService.gridFSInput(FileEntity.class, file.getInputStream());
+                    fileEntity.setFileNameUUID(fileUUID);
                     FileEntity filetemp = fileService.saveFile(fileEntity);
-                    fileService.gridFSInput(filetemp.getId(),FileEntity.class,file.getInputStream());
 //                    byte[] bytes = file.getBytes();
 //                    stream = new BufferedOutputStream(new FileOutputStream(
 //                            new File(file.getOriginalFilename())));
@@ -69,77 +68,53 @@ public class FileAPI {
 
                 } catch (Exception e) {
                     //stream = null;
-                    clientMessage=new ClientMessage(ResultStatusCode.SYSTEM_ERR.getCode(),
-                            ResultStatusCode.SYSTEM_ERR.getMsg(),null);
+                    clientMessage = new ClientMessage(ResultStatusCode.SYSTEM_ERR.getCode(),
+                            ResultStatusCode.SYSTEM_ERR.getMsg(), null);
                     return clientMessage;
                 }
             } else {
-                clientMessage=new ClientMessage(ResultStatusCode.INVALID_FILE.getCode(),
-                        ResultStatusCode.INVALID_FILE.getMsg(),null);
+                clientMessage = new ClientMessage(ResultStatusCode.INVALID_FILE.getCode(),
+                        ResultStatusCode.INVALID_FILE.getMsg(), null);
                 return clientMessage;
             }
         }
         projectEntity.setFileEntity(fileEntities);
         ProjectEntity p = fileService.saveProject(projectEntity);
 
-        clientMessage=new ClientMessage(ResultStatusCode.OK.getCode(),
-                ResultStatusCode.OK.getMsg(),p);
+        clientMessage = new ClientMessage(ResultStatusCode.OK.getCode(),
+                ResultStatusCode.OK.getMsg(), p);
         return clientMessage;
     }
 
     //文件下载相关代码
-    @RequestMapping(value = "/download/{pid}",method = RequestMethod.GET)
-    public ClientMessage downloadFile(@PathVariable("pid") String pid,@PathVariable("fid") String fid) {
-        ProjectEntity projectEntity = fileService.getProjectById(pid);
+    @RequestMapping(value = "/download/{fid}", method = RequestMethod.GET)
+    public ClientMessage downloadFile(@PathVariable("fid") String fid, HttpServletResponse httpServletResponse) throws IOException {
+        FileEntity fileEntity = fileService.getFileById(fid);
         ClientMessage clientMessage;
-        if(projectEntity==null){
-            clientMessage=new ClientMessage(ResultStatusCode.INVALID_PROJECT.getCode(),
-                    ResultStatusCode.INVALID_PROJECT.getMsg(),null);
+        if (fileEntity == null) {
+            clientMessage = new ClientMessage(ResultStatusCode.INVALID_FILE_ID.getCode(),
+                    ResultStatusCode.INVALID_FILE_ID.getMsg(), null);
             return clientMessage;
         }
 
-//        if (fileName != null) {
-//            //当前是从该工程的WEB-INF//File//下获取文件(该目录可以在下面一行代码配置)然后下载到C:\\users\\downloads即本机的默认下载的目录
-//            String realPath = request.getServletContext().getRealPath(
-//                    "//WEB-INF//");
-//            File file = new File(realPath, fileName);
-//            if (file.exists()) {
-//                response.setContentType("application/force-download");// 设置强制下载不打开
-//                response.addHeader("Content-Disposition",
-//                        "attachment;fileName=" + fileName);// 设置文件名
-//                byte[] buffer = new byte[1024];
-//                FileInputStream fis = null;
-//                BufferedInputStream bis = null;
-//                try {
-//                    fis = new FileInputStream(file);
-//                    bis = new BufferedInputStream(fis);
-//                    OutputStream os = response.getOutputStream();
-//                    int i = bis.read(buffer);
+
+        httpServletResponse.setContentType("application/force-download");// 设置强制下载不打开
+        httpServletResponse.addHeader("Content-Disposition",
+                "attachment;fileName=" + fileEntity.getName() + "_" + fileEntity.getFileNameUUID());// 设置文件名
+        OutputStream os = null;
+        try {
+            os = httpServletResponse.getOutputStream();
+            fileService.gridFSOutput(fileEntity.getFileNameUUID(), FileEntity.class, os);
+            os.flush();
 //                    while (i != -1) {
 //                        os.write(buffer, 0, i);
 //                        i = bis.read(buffer);
 //                    }
-//                    System.out.println("success");
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                } finally {
-//                    if (bis != null) {
-//                        try {
-//                            bis.close();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    if (fis != null) {
-//                        try {
-//                            fis.close();
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            os.close();
+        }
         return null;
     }
 }

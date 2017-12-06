@@ -33,16 +33,16 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("*") ; // 允许跨域请求
+        registry.addMapping("/**").allowedOrigins("*"); // 允许跨域请求
     }
 
     @Bean
-    public FilterRegistrationBean jwtFilterRegistrationBean(){
+    public FilterRegistrationBean jwtFilterRegistrationBean() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         JWTAuthenticationFilter httpBearerFilter = new JWTAuthenticationFilter();
         registrationBean.setFilter(httpBearerFilter);
         List<String> urlPatterns = new ArrayList<>();
-        for(String str : serviceFilter){
+        for (String str : serviceFilter) {
             urlPatterns.add(str);
         }
         registrationBean.setUrlPatterns(urlPatterns);

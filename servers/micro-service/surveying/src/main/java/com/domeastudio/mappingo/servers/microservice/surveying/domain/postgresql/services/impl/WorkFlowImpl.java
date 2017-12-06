@@ -14,6 +14,7 @@ import org.flowable.task.api.Task;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
@@ -22,7 +23,7 @@ public class WorkFlowImpl implements WorkFlow {
 
     @Autowired
     private TaskService taskService;
-//    @Autowired
+    //    @Autowired
 //    private ProcessEngine processEngine;
     @Autowired
     private RepositoryService repositoryService;
@@ -32,43 +33,43 @@ public class WorkFlowImpl implements WorkFlow {
     private HistoryService historyService;
 
     @Override
-    public Deployment deploymentProcessDefinition(String name, String resourceName, ZipInputStream zipInputStream, byte[] bytes, String text, BpmnModel bpmnModel,String path, ProcessDefType processDefType) {
-        Deployment deployment=null;
+    public Deployment deploymentProcessDefinition(String name, String resourceName, ZipInputStream zipInputStream, byte[] bytes, String text, BpmnModel bpmnModel, String path, ProcessDefType processDefType) {
+        Deployment deployment = null;
         //创建核心引擎对象
-        switch (processDefType){
+        switch (processDefType) {
             case ZIP:
-                deployment=repositoryService
+                deployment = repositoryService
                         .createDeployment()
                         .name(name)
                         .addZipInputStream(zipInputStream)
                         .deploy();
                 break;
             case BYTE:
-                deployment=repositoryService
+                deployment = repositoryService
                         .createDeployment()
                         .name(name)
-                        .addBytes(resourceName,bytes)
+                        .addBytes(resourceName, bytes)
                         .deploy();
                 break;
             case PATH:
-                deployment=repositoryService
+                deployment = repositoryService
                         .createDeployment()
                         .name(name)
                         .addClasspathResource(path)
                         .deploy();
                 break;
             case STRING:
-                deployment=repositoryService
+                deployment = repositoryService
                         .createDeployment()
                         .name(name)
-                        .addString(resourceName,text)
+                        .addString(resourceName, text)
                         .deploy();
                 break;
             case BPMNMODEL:
-                deployment=repositoryService
+                deployment = repositoryService
                         .createDeployment()
                         .name(name)
-                        .addBpmnModel(resourceName,bpmnModel)
+                        .addBpmnModel(resourceName, bpmnModel)
                         .deploy();
                 break;
         }

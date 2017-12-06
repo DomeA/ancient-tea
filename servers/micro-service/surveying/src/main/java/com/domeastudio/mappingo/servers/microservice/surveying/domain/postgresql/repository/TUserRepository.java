@@ -5,8 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TUserRepository extends JpaRepository<TuserEntity,String> {
+public interface TUserRepository extends JpaRepository<TuserEntity, String> {
     TuserEntity findByPhone(String phone);
+
     TuserEntity findByName(String name);
+
     TuserEntity findByEmail(String email);
 }

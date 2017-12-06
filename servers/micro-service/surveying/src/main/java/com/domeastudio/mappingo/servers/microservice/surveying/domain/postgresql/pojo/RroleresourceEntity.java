@@ -31,7 +31,8 @@ public class RroleresourceEntity {
         RroleresourceEntity that = (RroleresourceEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (tresourceByReid != null ? !tresourceByReid.equals(that.tresourceByReid) : that.tresourceByReid != null) return false;
+        if (tresourceByReid != null ? !tresourceByReid.equals(that.tresourceByReid) : that.tresourceByReid != null)
+            return false;
         if (troleByRid != null ? !troleByRid.equals(that.troleByRid) : that.troleByRid != null) return false;
 
         return true;

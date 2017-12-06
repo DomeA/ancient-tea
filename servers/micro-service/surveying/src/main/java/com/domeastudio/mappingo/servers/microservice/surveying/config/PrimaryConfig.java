@@ -57,9 +57,10 @@ public class PrimaryConfig {
         factoryBean.setJpaPropertyMap(jpaProperties());
         return factoryBean;
     }
+
     private Map<String, Object> jpaProperties() {
         Map<String, Object> props = new HashMap<>();
-        props.put("hibernate.ejb.naming_strategy",new SpringNamingStrategy());
+        props.put("hibernate.ejb.naming_strategy", new SpringNamingStrategy());
         return props;
     }
 

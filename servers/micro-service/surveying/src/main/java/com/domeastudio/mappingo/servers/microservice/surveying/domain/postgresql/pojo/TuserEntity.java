@@ -75,7 +75,8 @@ public class TuserEntity {
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (pwd != null ? !pwd.equals(that.pwd) : that.pwd != null) return false;
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (tuserinfoByUiid != null ? !tuserinfoByUiid.equals(that.tuserinfoByUiid) : that.tuserinfoByUiid != null) return false;
+        if (tuserinfoByUiid != null ? !tuserinfoByUiid.equals(that.tuserinfoByUiid) : that.tuserinfoByUiid != null)
+            return false;
         if (token != null ? !token.equals(that.token) : that.token != null) return false;
         if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
         if (salt != null ? !salt.equals(that.salt) : that.salt != null) return false;
@@ -129,7 +130,7 @@ public class TuserEntity {
     }
 
     @Basic
-    @Column(name = "phone",length = 11)
+    @Column(name = "phone", length = 11)
     public String getPhone() {
         return phone;
     }
@@ -167,6 +168,7 @@ public class TuserEntity {
     public void setAuthorTime(Integer authorTime) {
         this.authorTime = authorTime;
     }
+
     @Basic
     @Column(name = "registTime")
     public String getRegistTime() {

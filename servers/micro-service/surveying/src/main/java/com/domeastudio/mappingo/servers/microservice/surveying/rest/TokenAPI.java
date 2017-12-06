@@ -29,37 +29,34 @@ public class TokenAPI {
     @Autowired
     private Audience audienceEntity;
 
-    @RequestMapping(value = "/token",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/token", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ClientMessage getAccessToken(@RequestBody Login loginPara) {
         ClientMessage clientMessage;
-        try
-        {
+        try {
             //验证码校验在后面章节添加
             //验证用户名密码
-            TuserEntity user = tUserService.login(loginPara.getUserName(),loginPara.getPassword());
-            if (user == null)
-            {
+            TuserEntity user = tUserService.login(loginPara.getUserName(), loginPara.getPassword());
+            if (user == null) {
                 clientMessage = new ClientMessage(ResultStatusCode.INVALID_USERNAME_OR_PASSWORD.getCode(),
                         ResultStatusCode.INVALID_USERNAME_OR_PASSWORD.getMsg(), null);
                 return clientMessage;
             }
-            if(loginPara.getClientId() == null
-                    || (loginPara.getClientId().compareTo(user.getToken()) != 0))
-            {
+            if (loginPara.getClientId() == null
+                    || (loginPara.getClientId().compareTo(user.getToken()) != 0)) {
                 clientMessage = new ClientMessage(ResultStatusCode.INVALID_CLIENTID.getCode(),
                         ResultStatusCode.INVALID_CLIENTID.getMsg(), null);
                 return clientMessage;
             }
-            Integer sub= DateUtil.getDateSpace(user.getRegistTime(),DateUtil.dateToString("yyyy-MM-dd",new Date(),"MEDIUM"));
-            if(sub>user.getAuthorTime()){
+            Integer sub = DateUtil.getDateSpace(user.getRegistTime(), DateUtil.dateToString("yyyy-MM-dd", new Date(), "MEDIUM"));
+            if (sub > user.getAuthorTime()) {
                 clientMessage = new ClientMessage(ResultStatusCode.INVALID_TIME.getCode(),
                         ResultStatusCode.INVALID_TIME.getMsg(), null);
                 return clientMessage;
             }
-            List<String> roleByName=tUserService.findRoleByName(user);
-            StringBuilder stringBuilder=new StringBuilder();
-            if(roleByName.size()>0){
-                for(String role:roleByName){
+            List<String> roleByName = tUserService.findRoleByName(user);
+            StringBuilder stringBuilder = new StringBuilder();
+            if (roleByName.size() > 0) {
+                for (String role : roleByName) {
                     stringBuilder.append(role);
                 }
             }
@@ -77,25 +74,23 @@ public class TokenAPI {
                     ResultStatusCode.OK.getMsg(), accessTokenEntity);
             return clientMessage;
 
-        }
-        catch(Exception ex)
-        {
+        } catch (Exception ex) {
             clientMessage = new ClientMessage(ResultStatusCode.SYSTEM_ERR.getCode(),
                     ResultStatusCode.SYSTEM_ERR.getMsg(), null);
             return clientMessage;
         }
     }
 
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
-    public ClientMessage addUSer(@RequestBody Register register){
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ClientMessage addUSer(@RequestBody Register register) {
         ClientMessage clientMessage;
-        Boolean f = tUserService.createUser(register.getName(),register.getPwd(),register.getEmail(),register.getPhone(),register.getTerm());
-        System.out.println("用户："+register.getName()+(f?"成功！":"已经存在"));
-        if(f){
-            TuserEntity tuserEntity=tUserService.findUserByName(register.getName());
-            clientMessage=new ClientMessage(ResultStatusCode.OK.getCode(),ResultStatusCode.OK.getMsg(),tuserEntity.getToken());
-        }else{
-            clientMessage=new ClientMessage(ResultStatusCode.INVALID_USERNAME.getCode(),ResultStatusCode.INVALID_USERNAME.getMsg(),"用户名已经存在");
+        Boolean f = tUserService.createUser(register.getName(), register.getPwd(), register.getEmail(), register.getPhone(), register.getTerm());
+        System.out.println("用户：" + register.getName() + (f ? "成功！" : "已经存在"));
+        if (f) {
+            TuserEntity tuserEntity = tUserService.findUserByName(register.getName());
+            clientMessage = new ClientMessage(ResultStatusCode.OK.getCode(), ResultStatusCode.OK.getMsg(), tuserEntity.getToken());
+        } else {
+            clientMessage = new ClientMessage(ResultStatusCode.INVALID_USERNAME.getCode(), ResultStatusCode.INVALID_USERNAME.getMsg(), "用户名已经存在");
         }
         return clientMessage;
     }

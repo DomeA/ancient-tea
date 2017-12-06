@@ -13,16 +13,21 @@ import java.util.List;
 public interface FileService {
 
     FileEntity saveFile(FileEntity fileEntity);
-    ProjectEntity saveProject(ProjectEntity projectEntity);
-    void removeProject(String id);
-    void removeFile(String id);
-    FileEntity getFileById(String id);
-    ProjectEntity getProjectById(String id);
 
+    ProjectEntity saveProject(ProjectEntity projectEntity);
+
+    void removeProject(String id);
+
+    void removeFile(String id);
+
+    FileEntity getFileById(String id);
+
+    ProjectEntity getProjectById(String id);
 
 
     /**
      * 保存文件
+     *
      * @param file
      * @return
      */
@@ -30,12 +35,14 @@ public interface FileService {
 
     /**
      * 删除文件
+     *
      * @param id
      */
     void removeBpmnFile(String id);
 
     /**
      * 根据id获取文件
+     *
      * @param id
      * @return
      */
@@ -43,15 +50,20 @@ public interface FileService {
 
     /**
      * 分页查询，按上传时间降序
+     *
      * @param pageIndex
      * @param pageSize
      * @return
      */
     List<BpmnFileEntity> listBpmnFilesByPage(int pageIndex, int pageSize);
 
-    void gridFSInput(String id,Class cla, File file);
-    void gridFSInput(String id,Class cla, InputStream inputStream);
-    void gridFSInput(String id,Class cla, byte[] content);
-    void gridFSOutput(ObjectId id,Class cla, OutputStream outputFilepath);
-    void gridFSOutput(String name,Class cla, OutputStream outputFilepath);
+    String gridFSInput(Class cla, File file);
+
+    String gridFSInput(Class cla, InputStream inputStream);
+
+    String gridFSInput(Class cla, byte[] content);
+
+    void gridFSOutput(ObjectId id, Class cla, OutputStream outputFilepath);
+
+    void gridFSOutput(String name, Class cla, OutputStream outputFilepath);
 }

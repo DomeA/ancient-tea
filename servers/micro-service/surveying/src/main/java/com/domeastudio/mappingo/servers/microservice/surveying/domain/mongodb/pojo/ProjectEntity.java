@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import java.util.Date;
 import java.util.List;
 
-@Document(collection="sys_workflow_info")
+@Document(collection = "sys_workflow_info")
 public class ProjectEntity {
     @Id
     private String id;

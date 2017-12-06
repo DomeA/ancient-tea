@@ -72,7 +72,7 @@ public class ThirdConfig {
     }
 
     @Bean("transactionTemplateThird")
-    public TransactionTemplate transactionTemplate(PlatformTransactionManager platformTransactionManager){
+    public TransactionTemplate transactionTemplate(PlatformTransactionManager platformTransactionManager) {
         return new TransactionTemplate(platformTransactionManager);
     }
 }

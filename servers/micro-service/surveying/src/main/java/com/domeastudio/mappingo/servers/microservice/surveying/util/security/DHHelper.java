@@ -24,7 +24,7 @@ public class DHHelper {
 
     /**
      * 默认密钥字节数
-     *
+     * <p>
      * <pre>
      * DH
      * Default Keysize 1024
@@ -63,12 +63,11 @@ public class DHHelper {
     /**
      * 初始化乙方密钥
      *
-     * @param key
-     *            甲方公钥
+     * @param key 甲方公钥
      * @return
      * @throws Exception
      */
-    public static Map<String, Object> getKey(String key,ALGORITHM keyAlgorithm) throws Exception {
+    public static Map<String, Object> getKey(String key, ALGORITHM keyAlgorithm) throws Exception {
         // 解析甲方公钥
         byte[] keyBytes = BASE64Helper.decryptBASE64(key);
         X509EncodedKeySpec x509KeySpec = new X509EncodedKeySpec(keyBytes);
@@ -101,20 +100,17 @@ public class DHHelper {
     /**
      * 加密<br>
      *
-     * @param data
-     *            待加密数据
-     * @param publicKey
-     *            甲方公钥
-     * @param privateKey
-     *            乙方私钥
+     * @param data       待加密数据
+     * @param publicKey  甲方公钥
+     * @param privateKey 乙方私钥
      * @return
      * @throws Exception
      */
     public static byte[] encrypt(byte[] data, String publicKey,
-                                 String privateKey,ALGORITHM keyAlgorithm,ALGORITHM secretAlgorithm) throws Exception {
+                                 String privateKey, ALGORITHM keyAlgorithm, ALGORITHM secretAlgorithm) throws Exception {
 
         // 生成本地密钥
-        SecretKey secretKey = getSecretKey(publicKey, privateKey,keyAlgorithm,secretAlgorithm);
+        SecretKey secretKey = getSecretKey(publicKey, privateKey, keyAlgorithm, secretAlgorithm);
 
         // 数据加密
         Cipher cipher = Cipher.getInstance(secretKey.getAlgorithm());
@@ -126,20 +122,17 @@ public class DHHelper {
     /**
      * 解密<br>
      *
-     * @param data
-     *            待解密数据
-     * @param publicKey
-     *            乙方公钥
-     * @param privateKey
-     *            乙方私钥
+     * @param data       待解密数据
+     * @param publicKey  乙方公钥
+     * @param privateKey 乙方私钥
      * @return
      * @throws Exception
      */
     public static byte[] decrypt(byte[] data, String publicKey,
-                                 String privateKey,ALGORITHM keyAlgorithm,ALGORITHM secretAlgorithm) throws Exception {
+                                 String privateKey, ALGORITHM keyAlgorithm, ALGORITHM secretAlgorithm) throws Exception {
 
         // 生成本地密钥
-        SecretKey secretKey = getSecretKey(publicKey, privateKey,keyAlgorithm,secretAlgorithm);
+        SecretKey secretKey = getSecretKey(publicKey, privateKey, keyAlgorithm, secretAlgorithm);
         // 数据解密
         Cipher cipher = Cipher.getInstance(secretKey.getAlgorithm());
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
@@ -150,14 +143,12 @@ public class DHHelper {
     /**
      * 构建密钥
      *
-     * @param publicKey
-     *            公钥
-     * @param privateKey
-     *            私钥
+     * @param publicKey  公钥
+     * @param privateKey 私钥
      * @return
      * @throws Exception
      */
-    private static SecretKey getSecretKey(String publicKey, String privateKey,ALGORITHM keyAlgorithm,ALGORITHM secretAlgorithm)
+    private static SecretKey getSecretKey(String publicKey, String privateKey, ALGORITHM keyAlgorithm, ALGORITHM secretAlgorithm)
             throws Exception {
         // 初始化公钥
         byte[] pubKeyBytes = BASE64Helper.decryptBASE64(publicKey);
@@ -221,7 +212,7 @@ public class DHHelper {
         System.err.println("甲方私钥:\r" + aPrivateKey);
 
         // 由甲方公钥产生本地密钥对儿
-        Map<String, Object> bKeyMap = DHHelper.getKey(aPublicKey,ALGORITHM.DH);
+        Map<String, Object> bKeyMap = DHHelper.getKey(aPublicKey, ALGORITHM.DH);
         String bPublicKey = DHHelper.getPublicKey(bKeyMap);
         String bPrivateKey = DHHelper.getPrivateKey(bKeyMap);
 
@@ -233,14 +224,13 @@ public class DHHelper {
 
         // 由甲方公钥，乙方私钥构建密文
         byte[] aCode = DHHelper.encrypt(aInput.getBytes(), aPublicKey,
-                bPrivateKey,ALGORITHM.DH,ALGORITHM.DES);
+                bPrivateKey, ALGORITHM.DH, ALGORITHM.DES);
 
         // 由乙方公钥，甲方私钥解密
-        byte[] aDecode = DHHelper.decrypt(aCode, bPublicKey, aPrivateKey,ALGORITHM.DH,ALGORITHM.DES);
+        byte[] aDecode = DHHelper.decrypt(aCode, bPublicKey, aPrivateKey, ALGORITHM.DH, ALGORITHM.DES);
         String aOutput = (new String(aDecode));
 
         System.err.println("解密: " + aOutput);
-
 
 
         System.err.println(" ===============反过来加密解密================== ");
@@ -249,10 +239,10 @@ public class DHHelper {
 
         // 由乙方公钥，甲方私钥构建密文
         byte[] bCode = DHHelper.encrypt(bInput.getBytes(), bPublicKey,
-                aPrivateKey,ALGORITHM.DH,ALGORITHM.DES);
+                aPrivateKey, ALGORITHM.DH, ALGORITHM.DES);
 
         // 由甲方公钥，乙方私钥解密
-        byte[] bDecode = DHHelper.decrypt(bCode, aPublicKey, bPrivateKey,ALGORITHM.DH,ALGORITHM.DES);
+        byte[] bDecode = DHHelper.decrypt(bCode, aPublicKey, bPrivateKey, ALGORITHM.DH, ALGORITHM.DES);
         String bOutput = (new String(bDecode));
 
         System.err.println("解密: " + bOutput);

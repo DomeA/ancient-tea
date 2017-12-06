@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.*;
 import java.util.Date;
 
-@Document(collection="sys_workflow_info")
+@Document(collection = "sys_workflow_info")
 public class BpmnFileEntity {
 
     @Id  // 主键

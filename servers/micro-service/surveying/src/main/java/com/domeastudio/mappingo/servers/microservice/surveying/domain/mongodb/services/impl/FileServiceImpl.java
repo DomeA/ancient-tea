@@ -104,7 +104,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void gridFSInput(String id,Class cla, File file) {
+    public String gridFSInput(Class cla, File file) {
         DB db = mongoOperations.getCollection(
                 mongoOperations.getCollectionName(cla)).getDB();
         //db.requestStart();
@@ -112,47 +112,47 @@ public class FileServiceImpl implements FileService {
         try {
             gfsInput = new GridFS(db, "fs")
                     .createFile(file);
-            gfsInput.setId(id);
-            gfsInput.setFilename(UUID.randomUUID().toString().replace("-",""));// 保存到数据库的文件名为qq123456789logo
+            gfsInput.setFilename(UUID.randomUUID().toString().replace("-", ""));// 保存到数据库的文件名为qq123456789logo
             gfsInput.save();
+            return gfsInput.getFilename();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
-      //  db.requestDone();
+        //  db.requestDone();
     }
 
     @Override
-    public void gridFSInput(String id, Class cla, InputStream inputStream) {
+    public String gridFSInput(Class cla, InputStream inputStream) {
         DB db = mongoOperations.getCollection(
                 mongoOperations.getCollectionName(cla)).getDB();
         //db.requestStart();
         GridFSInputFile gfsInput;
         gfsInput = new GridFS(db, "fs")
                 .createFile(inputStream);
-        gfsInput.setId(id);
-        gfsInput.setFilename(UUID.randomUUID().toString().replace("-",""));// 保存到数据库的文件名为qq123456789logo
+        gfsInput.setFilename(UUID.randomUUID().toString().replace("-", ""));// 保存到数据库的文件名为qq123456789logo
         gfsInput.save();
+        return gfsInput.getFilename();
     }
 
     @Override
-    public void gridFSInput(String id, Class cla, byte[] content) {
+    public String gridFSInput(Class cla, byte[] content) {
         DB db = mongoOperations.getCollection(
                 mongoOperations.getCollectionName(cla)).getDB();
         //db.requestStart();
         GridFSInputFile gfsInput;
         gfsInput = new GridFS(db, "fs")
                 .createFile(content);
-        gfsInput.setId(id);
-        gfsInput.setFilename(UUID.randomUUID().toString().replace("-",""));// 保存到数据库的文件名为qq123456789logo
+        gfsInput.setFilename(UUID.randomUUID().toString().replace("-", ""));// 保存到数据库的文件名为qq123456789logo
         gfsInput.save();
+        return gfsInput.getFilename();
     }
 
     @Override
-    public void gridFSOutput(ObjectId id,Class cla, OutputStream outputFilepath) {
+    public void gridFSOutput(ObjectId id, Class cla, OutputStream outputFilepath) {
         DB db = mongoOperations.getCollection(
                 mongoOperations.getCollectionName(cla)).getDB();
-
         GridFSDBFile gfsFile = new GridFS(db, "fs").findOne(id);// 查找文件名qq123456789logo输出保存
         try {
             gfsFile.writeTo(outputFilepath);
@@ -163,7 +163,7 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void gridFSOutput(String name,Class cla, OutputStream outputFilepath) {
+    public void gridFSOutput(String name, Class cla, OutputStream outputFilepath) {
         DB db = mongoOperations.getCollection(
                 mongoOperations.getCollectionName(cla)).getDB();
 
