@@ -1,0 +1,23 @@
+{
+  "name": "mappingo manager",
+  "homepage": "https://github.com/DomeA/ancient-tea",
+  "authors": [
+    "DomeA <domeastudio@gmail.com>"
+  ],
+  "description": "domeastudio mappingo",
+  "main": "",
+  "keywords": [
+    "manager"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "supersized": "*"
+  }
+}

@@ -3,8 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>Mappingo后台管理系统登录页面</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/index/reset.css">
+    <link rel="stylesheet" href="css/index/supersized.css">
+    <link rel="stylesheet" href="css/index/style.css">
+    <script src="js/libs/requirejs/require.js" data-main="js/app/index.js"></script>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 </head>
-<body>
+<body ondragstart="return false;">
+<div class="page-container">
+    <h1>后台管理系统登录界面
+        <small style="font-size: 20px">Mappingo</small>
+    </h1>
+    <form id="loginForm" action="" method="post">
+        <input type="text" name="clientId" class="clientId" placeholder="客户端识别码">
+        <input type="text" name="username" class="username" placeholder="管理员帐号">
+        <input type="password" name="password" class="password" placeholder="密码">
+        <table>
+            <tbody>
+            <tr>
+                <td style="padding-right: 10px;">
+                    <button class="Bluebutton" id="registBtn" type="button">没有？那就注册</button>
+                </td>
+                <td style="padding-left: 10px;">
+                    <button class="Redbutton" id="loginBtn" type="submit">登录系统</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
+
+        <div class="error"><span onselectstart="return false">+</span></div>
+    </form>
+    <!--<div class="connect">-->
+    <!--<p>Or connect with:</p>-->
+    <!--<p>-->
+    <!--<a class="facebook" href=""></a>-->
+    <!--<a class="twitter" href=""></a>-->
+    <!--</p>-->
+    <!--</div>-->
+</div>
+<!-- Javascript -->
+<!--<script src="libs/jquery/dist/jquery.js"></script>-->
+<!--<script src="libs/jquery/js/supersized.3.2.7.min.js"></script>-->
+<!--<script src="assets/js/supersized-init.js"></script>-->
+<!--<script src="assets/js/scripts.js"></script>-->
 </body>
 </html>
