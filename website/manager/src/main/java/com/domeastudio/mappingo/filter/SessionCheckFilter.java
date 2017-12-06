@@ -29,9 +29,11 @@ public class SessionCheckFilter implements Filter {
 
         String userId = (String) session.getAttribute("userid");
         String token = (String) session.getAttribute("token");
+        String role = (String) session.getAttribute("role");
         System.out.println("load file name:"+request.getServletPath());
         System.out.println("userid:"+userId);
         System.out.println("token:"+token);
+        System.out.println("role:"+role);
 
         for (String page:excludedPages) {
             if (request.getServletPath().equals(page)
@@ -39,7 +41,8 @@ public class SessionCheckFilter implements Filter {
                     || request.getServletPath().endsWith(".js")
                     || request.getServletPath ().contains(".png")
                     ||(userId != null&&!userId.equals("null")
-                    &&token!=null&&!token.equals("null"))){
+                    &&token!=null&&!token.equals("null")&&
+                    role!=null&&role.equals("null"))){
                 filterChain.doFilter(request,response);
                 break;
             }else{
