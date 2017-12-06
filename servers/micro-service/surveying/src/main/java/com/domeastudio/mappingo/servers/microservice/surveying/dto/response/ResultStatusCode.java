@@ -17,7 +17,8 @@ public enum ResultStatusCode {
     NONE_GROUP_TASK(40006,"There is no group task"),
     NONE_FILE(50001,"There is no files"),
     INVALID_FILES(50002,"Invalid file collection"),
-    INVALID_FILE(50003,"Invalid file");
+    INVALID_FILE(50003,"Invalid file"),
+    INVALID_PROJECT(50004,"Invalid project");
 
     private int code;
     private String msg;

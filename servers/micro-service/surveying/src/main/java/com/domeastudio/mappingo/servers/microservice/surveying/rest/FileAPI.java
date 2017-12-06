@@ -83,86 +83,63 @@ public class FileAPI {
         ProjectEntity p = fileService.saveProject(projectEntity);
 
         clientMessage=new ClientMessage(ResultStatusCode.OK.getCode(),
-                ResultStatusCode.OK.getMsg(),p.getId());
+                ResultStatusCode.OK.getMsg(),p);
         return clientMessage;
     }
 
     //文件下载相关代码
-    @RequestMapping(value = "/download/{id}",method = RequestMethod.GET)
-    public String downloadFile(HttpServletRequest request, HttpServletResponse response) {
-        String fileName = "FileUploadTests.java";
-        if (fileName != null) {
-            //当前是从该工程的WEB-INF//File//下获取文件(该目录可以在下面一行代码配置)然后下载到C:\\users\\downloads即本机的默认下载的目录
-            String realPath = request.getServletContext().getRealPath(
-                    "//WEB-INF//");
-            File file = new File(realPath, fileName);
-            if (file.exists()) {
-                response.setContentType("application/force-download");// 设置强制下载不打开
-                response.addHeader("Content-Disposition",
-                        "attachment;fileName=" + fileName);// 设置文件名
-                byte[] buffer = new byte[1024];
-                FileInputStream fis = null;
-                BufferedInputStream bis = null;
-                try {
-                    fis = new FileInputStream(file);
-                    bis = new BufferedInputStream(fis);
-                    OutputStream os = response.getOutputStream();
-                    int i = bis.read(buffer);
-                    while (i != -1) {
-                        os.write(buffer, 0, i);
-                        i = bis.read(buffer);
-                    }
-                    System.out.println("success");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    if (bis != null) {
-                        try {
-                            bis.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    if (fis != null) {
-                        try {
-                            fis.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
+    @RequestMapping(value = "/download/{pid}",method = RequestMethod.GET)
+    public ClientMessage downloadFile(@PathVariable("pid") String pid,@PathVariable("fid") String fid) {
+        ProjectEntity projectEntity = fileService.getProjectById(pid);
+        ClientMessage clientMessage;
+        if(projectEntity==null){
+            clientMessage=new ClientMessage(ResultStatusCode.INVALID_PROJECT.getCode(),
+                    ResultStatusCode.INVALID_PROJECT.getMsg(),null);
+            return clientMessage;
         }
-        return null;
-    }
-    //多文件上传
-    @RequestMapping(value = "/batch/upload", method = RequestMethod.POST)
-    @ResponseBody
-    public String handleFileUpload(HttpServletRequest request) {
-        List<MultipartFile> files = ((MultipartHttpServletRequest) request)
-                .getFiles("file");
-        MultipartFile file = null;
-        BufferedOutputStream stream = null;
-        for (int i = 0; i < files.size(); ++i) {
-            file = files.get(i);
-            if (!file.isEmpty()) {
-                try {
-                    byte[] bytes = file.getBytes();
-                    stream = new BufferedOutputStream(new FileOutputStream(
-                            new File(file.getOriginalFilename())));
-                    stream.write(bytes);
-                    stream.close();
 
-                } catch (Exception e) {
-                    stream = null;
-                    return "You failed to upload " + i + " => "
-                            + e.getMessage();
-                }
-            } else {
-                return "You failed to upload " + i
-                        + " because the file was empty.";
-            }
-        }
-        return "upload successful";
+//        if (fileName != null) {
+//            //当前是从该工程的WEB-INF//File//下获取文件(该目录可以在下面一行代码配置)然后下载到C:\\users\\downloads即本机的默认下载的目录
+//            String realPath = request.getServletContext().getRealPath(
+//                    "//WEB-INF//");
+//            File file = new File(realPath, fileName);
+//            if (file.exists()) {
+//                response.setContentType("application/force-download");// 设置强制下载不打开
+//                response.addHeader("Content-Disposition",
+//                        "attachment;fileName=" + fileName);// 设置文件名
+//                byte[] buffer = new byte[1024];
+//                FileInputStream fis = null;
+//                BufferedInputStream bis = null;
+//                try {
+//                    fis = new FileInputStream(file);
+//                    bis = new BufferedInputStream(fis);
+//                    OutputStream os = response.getOutputStream();
+//                    int i = bis.read(buffer);
+//                    while (i != -1) {
+//                        os.write(buffer, 0, i);
+//                        i = bis.read(buffer);
+//                    }
+//                    System.out.println("success");
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    if (bis != null) {
+//                        try {
+//                            bis.close();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    if (fis != null) {
+//                        try {
+//                            fis.close();
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            }
+//        }
+        return null;
     }
 }
