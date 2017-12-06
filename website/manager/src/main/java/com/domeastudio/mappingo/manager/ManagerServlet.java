@@ -35,10 +35,13 @@ public class ManagerServlet extends HttpServlet {
                 try {
                     String str = new String(BASE64Helper.decryptBASE64(authArry[1]));
                     Map<String, String> user = JsonStringUtil.toMap(str);
-                    session.setAttribute("token", auth);
-                    session.setAttribute("userid", user.get("userid"));
-                    resp.setHeader("Authorization", "bearer " + auth);
-                    resp.sendRedirect(path + "/manager.jsp");
+                    if(user.get("role").compareTo("ROLE_SYSADMIN")==0){
+                        session.setAttribute("token", auth);
+                        session.setAttribute("role",user.get("role"));
+                        session.setAttribute("userid", user.get("userid"));
+                        resp.setHeader("Authorization", "bearer " + auth);
+                        resp.sendRedirect(path + "/manager.jsp");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
