@@ -13,5 +13,29 @@
 
     <artifactId>manager</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20171018</version>
+        </dependency>
 
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/us.monoid.web/resty &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>us.monoid.web</groupId>-->
+            <!--<artifactId>resty</artifactId>-->
+            <!--<version>0.3.2</version>-->
+        <!--</dependency>-->
+
+    </dependencies>
+    <build>
+        <finalName>manager</finalName>
+    </build>
 </project>
