@@ -1,9 +1,5 @@
 package com.domeastudio.mappingo.util.security;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.crypto.Cipher;
 import javax.crypto.KeyAgreement;
 import javax.crypto.SecretKey;
@@ -20,8 +16,6 @@ import java.util.Map;
  * Created by domea on 16-4-21.
  */
 public class DHHelper {
-    private static Logger logger = LoggerFactory.getLogger(DHHelper.class);
-
     /**
      * 默认密钥字节数
      * <p>

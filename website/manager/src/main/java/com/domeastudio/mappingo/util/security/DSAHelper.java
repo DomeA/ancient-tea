@@ -1,8 +1,5 @@
 package com.domeastudio.mappingo.util.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.security.*;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
@@ -15,8 +12,6 @@ import java.util.Map;
  * Created by domea on 16-4-21.
  */
 public class DSAHelper {
-    private static Logger logger = LoggerFactory.getLogger(DSAHelper.class);
-
     /**
      * 默认密钥字节数
      * <p>

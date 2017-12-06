@@ -1,9 +1,6 @@
 package com.domeastudio.mappingo.util.security;
 
-
-import com.domeastudio.mappingo.servers.microservice.surveying.util.security.base.Byte2StringHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.domeastudio.mappingo.util.security.base.Byte2StringHelper;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.Mac;
@@ -15,7 +12,6 @@ import java.math.BigInteger;
  * Created by domea on 16-4-14.
  */
 public class HMACHelper {
-    private static Logger logger = LoggerFactory.getLogger(HMACHelper.class);
 
     /**
      * 初始化HMAC密钥
@@ -26,7 +22,7 @@ public class HMACHelper {
     public static String getKey(ALGORITHM algorithm) throws Exception {
         KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm.name());
         SecretKey secretKey = keyGenerator.generateKey();
-        logger.info("get HMAC algorithm (operator '" + algorithm.name() + "') key:" + BASE64Helper.encryptBASE64(secretKey.getEncoded()));
+        //logger.info("get HMAC algorithm (operator '" + algorithm.name() + "') key:" + BASE64Helper.encryptBASE64(secretKey.getEncoded()));
         return BASE64Helper.encryptBASE64(secretKey.getEncoded());
     }
 
@@ -42,13 +38,13 @@ public class HMACHelper {
         if (null == data && data.length < 1) {
             return null;
         }
-        logger.info("original string:" + data);
-        logger.info("secret key:" + key);
-        logger.info("algorithm operator:" + algorithm.name());
+        //logger.info("original string:" + data);
+        //logger.info("secret key:" + key);
+        //logger.info("algorithm operator:" + algorithm.name());
         SecretKey secretKey = new SecretKeySpec(BASE64Helper.decryptBASE64(key), algorithm.name());
         Mac mac = Mac.getInstance(secretKey.getAlgorithm());
         mac.init(secretKey);
-        logger.info("Get HMAC encrypted string:" + BASE64Helper.encryptBASE64(secretKey.getEncoded()));
+        //logger.info("Get HMAC encrypted string:" + BASE64Helper.encryptBASE64(secretKey.getEncoded()));
         return mac.doFinal(data);
     }
 
