@@ -1,6 +1,6 @@
-
 jQuery(document).ready(function() {
-
+    var serverHost="http://localhost:8050";
+    $('.registration-form form').attr("action",serverHost+"/oauth/register");
     /*
         Fullscreen background
     */
@@ -54,8 +54,7 @@ jQuery(document).ready(function() {
 
     // submit
     $('.registration-form').on('submit', function(e) {
-
-        $(this).find('input[type="text"], input[type="password"], textarea').each(function() {
+        $(this).find('input[type="text"], input[type="password"]').each(function() {
             if( $(this).val() == "" ) {
                 e.preventDefault();
                 $(this).addClass('input-error');
@@ -64,7 +63,6 @@ jQuery(document).ready(function() {
                 $(this).removeClass('input-error');
             }
         });
-
     });
 
 
