@@ -102,7 +102,7 @@ public class TokenAPI {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ClientMessage addUSer(@RequestBody Register register) {
+    public ClientMessage addUSer(Register register) {
         ClientMessage clientMessage;
         Boolean f = tUserService.createUser(register.getName(), register.getPwd(), register.getEmail(), register.getPhone(), register.getTerm());
         System.out.println("用户：" + register.getName() + (f ? "成功！" : "已经存在"));
