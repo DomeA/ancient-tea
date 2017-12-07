@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -30,8 +31,9 @@ public class TokenAPI {
     private Audience audienceEntity;
 
     @RequestMapping(value = "/token", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ClientMessage getAccessToken(@RequestBody Login loginPara) {
+    public ClientMessage getAccessToken(@RequestBody Login loginPara, HttpServletRequest httpServletRequest) {
         ClientMessage clientMessage;
+        String browserDetails=httpServletRequest.getHeader("User-Agent").toLowerCase();
         try {
             //验证码校验在后面章节添加
             //验证用户名密码
@@ -41,11 +43,13 @@ public class TokenAPI {
                         ResultStatusCode.INVALID_USERNAME_OR_PASSWORD.getMsg(), null);
                 return clientMessage;
             }
-            if (loginPara.getClientId() == null
-                    || (loginPara.getClientId().compareTo(user.getToken()) != 0)) {
-                clientMessage = new ClientMessage(ResultStatusCode.INVALID_CLIENTID.getCode(),
-                        ResultStatusCode.INVALID_CLIENTID.getMsg(), null);
-                return clientMessage;
+            if(!isBrowser(browserDetails)) {
+                if (loginPara.getLicence() == null
+                        || (loginPara.getLicence().compareTo(user.getToken()) != 0)) {
+                    clientMessage = new ClientMessage(ResultStatusCode.INVALID_CLIENTID.getCode(),
+                            ResultStatusCode.INVALID_CLIENTID.getMsg(), null);
+                    return clientMessage;
+                }
             }
             Integer sub = DateUtil.getDateSpace(user.getRegistTime(), DateUtil.dateToString("yyyy-MM-dd", new Date(), "MEDIUM"));
             if (sub > user.getAuthorTime()) {
@@ -79,6 +83,22 @@ public class TokenAPI {
                     ResultStatusCode.SYSTEM_ERR.getMsg(), null);
             return clientMessage;
         }
+    }
+
+    private Boolean isBrowser(String browser){
+        if(browser!=null) {
+            if (browser.contains("edge") || browser.contains("msie") ||
+                    (browser.contains("safari") && browser.contains("version")) ||
+                    (browser.contains("opr") || browser.contains("opera")) ||
+                    browser.contains("chrome") || browser.contains("firefox") ||
+                    browser.contains("rv") || (browser.indexOf("mozilla/7.0") > -1 ||
+                    browser.indexOf("netscape6") != -1 || browser.indexOf("mozilla/4.78") != -1 ||
+                    browser.indexOf("mozilla/3") != -1 || browser.indexOf("mozilla/4.7") != -1 ||
+                    browser.indexOf("mozilla/4.08") != -1)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)

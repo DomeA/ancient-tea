@@ -26,7 +26,7 @@ public class JWTAuthenticationFilter implements Filter {
 
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig){
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
                 filterConfig.getServletContext());
     }
