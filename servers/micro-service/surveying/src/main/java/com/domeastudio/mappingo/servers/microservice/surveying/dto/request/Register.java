@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 @JsonRootName("register")
 public class Register {
     private String name;
+    private String loginName;
     private String pwd;
     private String email;
     private String phone;
@@ -48,5 +49,13 @@ public class Register {
 
     public void setTerm(Integer term) {
         this.term = term;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 }

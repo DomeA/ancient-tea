@@ -2,19 +2,11 @@ package com.domeastudio.mappingo.servers.microservice.surveying.dto.request;
 
 
 public class Login {
-    private String clientId;
+    private String licence;
     private String userName;
     private String password;
     private String captchaCode;
     private String captchaValue;
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
 
     public String getUserName() {
         return userName;
@@ -46,5 +38,13 @@ public class Login {
 
     public void setCaptchaValue(String captchaValue) {
         this.captchaValue = captchaValue;
+    }
+
+    public String getLicence() {
+        return licence;
+    }
+
+    public void setLicence(String licence) {
+        this.licence = licence;
     }
 }

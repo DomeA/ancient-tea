@@ -104,8 +104,8 @@ public class TokenAPI {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ClientMessage addUSer(Register register) {
         ClientMessage clientMessage;
-        Boolean f = tUserService.createUser(register.getName(), register.getPwd(), register.getEmail(), register.getPhone(), register.getTerm());
-        System.out.println("用户：" + register.getName() + (f ? "成功！" : "已经存在"));
+        Boolean f = tUserService.createUser(register.getLoginName(), register.getPwd(), register.getEmail(), register.getPhone(), register.getTerm());
+        System.out.println("用户：" + register.getName() + (f ? "创建成功！" : "已经存在"));
         if (f) {
             TuserEntity tuserEntity = tUserService.findUserByName(register.getName());
             clientMessage = new ClientMessage(ResultStatusCode.OK.getCode(), ResultStatusCode.OK.getMsg(), tuserEntity.getToken());
