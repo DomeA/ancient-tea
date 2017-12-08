@@ -1,6 +1,6 @@
 jQuery(document).ready(function() {
     var serverHost="http://localhost:8050";
-    $('.registration-form form').attr("action",serverHost+"/oauth/register");
+    $('.registration-form').attr("action",serverHost+"/oauth/register");
     /*
         Fullscreen background
     */
