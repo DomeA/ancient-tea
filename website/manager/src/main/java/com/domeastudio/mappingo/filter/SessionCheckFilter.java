@@ -35,22 +35,20 @@ public class SessionCheckFilter implements Filter {
         System.out.println("token:"+token);
         System.out.println("role:"+role);
 
+        Boolean f=false;
         for (String page:excludedPages) {
-            if (request.getServletPath().equals(page)
-                    ||request.getServletPath().endsWith(".css")
-                    || request.getServletPath().endsWith(".js")
-                    || request.getServletPath ().contains(".png")
+            if (request.getServletPath().contains(page)
                     ||(userId != null&&!userId.equals("null")
                     &&token!=null&&!token.equals("null")&&
                     role!=null&&role.equals("null"))){
+                f=true;
                 filterChain.doFilter(request,response);
-                break;
-            }else{
-                String path=request.getContextPath();
-                //request.getRequestDispatcher(path+homePage).forward(request,response);
-                response.sendRedirect(path+homePage);
-                break;
             }
+        }
+        if(!f){
+            String path=request.getContextPath();
+            //request.getRequestDispatcher(path+homePage).forward(request,response);
+            response.sendRedirect(path+homePage);
         }
     }
 
